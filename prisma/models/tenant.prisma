@@ -1,0 +1,9 @@
+
+
+model tenant {
+  LOCN_ID        String  @id @default(uuid())
+  LOCC_NOM     String
+  LOCC_PRENOM      String
+  LOCC_MAIL  String
+  LOCC_MDP     String
+}

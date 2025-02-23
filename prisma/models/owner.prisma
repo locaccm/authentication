@@ -1,0 +1,9 @@
+
+
+model owner {
+  PRON_ID        String  @id @default(uuid())
+  PROC_NOM     String
+  PROC_PRENOM      String
+  PROC_MAIL  String
+  PROC_MDP     String
+}
