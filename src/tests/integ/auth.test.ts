@@ -6,7 +6,7 @@ describe('Authentication route tests.', () => {
         const res = await request(app)
             .post('/auth/signup')
             .send({
-                email: 'test@example.com',
+                email: 'testapprouved'+Math.floor(Math.random() * 1000000)+'@example.com',
                 password: 'ValidPass1!',
                 name: "pedro",
                 surname: "toto",
@@ -21,7 +21,7 @@ describe('Authentication route tests.', () => {
         const res = await request(app)
             .post('/auth/signup')
             .send({
-                email: 'test@example.com',
+                email: 'testbadpassword'+Math.floor(Math.random() * 1000000)+'@example.com',
                 password: 'short',
                 name: "pedro",
                 surname: "toto",
@@ -32,11 +32,35 @@ describe('Authentication route tests.', () => {
         expect(res.body).toHaveProperty('error', 'The password must be at least 8 characters long.');
     });
 
+    it('Should reject a registration with an already exist email.', async () => {
+        const originalRes = await request(app)
+            .post('/auth/signup')
+            .send({
+                email: 'existingemail@example.com',
+                password: 'ValidPass1!',
+                name: "pedro",
+                surname: "toto",
+                status: "tenant"
+            });
+
+        const res = await request(app)
+            .post('/auth/signup')
+            .send({
+                email: 'existingemail@example.com',
+                password: 'ValidPass1!',
+                name: "pedro",
+                surname: "toto",
+                status: "tenant"
+            });
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toHaveProperty('error', 'The email is not valid.');
+    });
+
     it('Should reject a registration with an unknown status.', async () => {
         const res = await request(app)
             .post('/auth/signup')
             .send({
-                email: 'test@example.com',
+                email: 'testunknownpassword'+Math.floor(Math.random() * 1000000)+'@example.com',
                 password: 'ValidPass1!',
                 name: "pedro",
                 surname: "toto",

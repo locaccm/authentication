@@ -16,3 +16,10 @@ export const registerTenant = async (user : User) => {
     });
 };
 
+export const emailExists  = async (email: string) => {
+    return prisma.tenant.findFirst({
+        where: {
+            LOCC_MAIL: email
+        }
+    });
+};

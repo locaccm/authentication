@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { registerTenant } from '../services/authService';
 import {validatePassword} from "../middlewares/validatePassword";
 import User from "../models/user";
+import {emailAlreadyExist} from "../middlewares/emailAlreadyExist";
 
 export const signUp = async (req: Request, res: Response) => {
     const {surname, name, email, password, status } = req.body;
@@ -17,6 +18,7 @@ export const signUp = async (req: Request, res: Response) => {
         switch (status){
             case 'tenant':
                 validatePassword(userObject.password, res);
+                await emailAlreadyExist(userObject.email, res);
                 const user = await registerTenant(userObject);
                 const { LOCC_MDP, ...userWithoutPassword } = user;
 
