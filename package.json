@@ -11,11 +11,6 @@
     "migrate": "npm run generate:schema && npx src/prisma migrate dev --name init && npx prisma generate",
     "test": "jest --coverage --coverageReporters=lcov"
   },
-  "jest": {
-    "collectCoverage": true,
-    "coverageDirectory": "coverage",
-    "coverageReporters": ["lcov", "text"]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/locaccm/authentication.git"
