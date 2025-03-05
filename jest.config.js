@@ -8,5 +8,5 @@ module.exports = {
   collectCoverage: true,
   coverageProvider: "v8",
   coverageDirectory: "coverage",
-  coverageReporters: ["lcov", "text"]
+  coverageReporters: ["lcov", "text"],
 };
