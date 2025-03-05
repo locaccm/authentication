@@ -4,6 +4,15 @@ import { Response } from 'express';
 describe('Password Validation Tests', () => {
     let res: Response;
 
+    const dataTest =[
+        {input: 'short', expected: 'The password must be at least 8 characters long.', itTitle: "Should reject a short password."},
+        {input: 'lowercase1!', expected: 'The password must contain at least one uppercase letter.', itTitle: "Should reject a password without uppercase letter."},
+        {input: 'UPPERCASE1!', expected: 'The password must contain at least one lowercase letter.', itTitle: "Should reject a password without lowercase letter."},
+        {input: 'Password!', expected: 'The password must contain at least one digit.', itTitle: "Should reject a password without digit."},
+        {input: 'Password1', expected: 'The password must contain at least one special character (@$!%*?&).', itTitle: "Should reject a password without special character."},
+        {input: 'ValidPassword1!', expected: '', itTitle: "Should accept a valid password."},
+    ]
+
     beforeEach(() => {
         res = {
             status: jest.fn().mockReturnThis(),
@@ -11,46 +20,17 @@ describe('Password Validation Tests', () => {
         } as unknown as Response;
     });
 
-    it('should return error for password shorter than 8 characters', () => {
-        const password = 'short';
-        validatePassword(password, res);
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ error: 'The password must be at least 8 characters long.' });
-    });
+    dataTest.forEach((data) => {
+        it(data.itTitle, () => {
+            validatePassword(data.input, res);
 
-    it('should return error for password without an uppercase letter', () => {
-        const password = 'lowercase1!';
-        validatePassword(password, res);
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ error: 'The password must contain at least one uppercase letter.' });
-    });
-
-    it('should return error for password without a lowercase letter', () => {
-        const password = 'UPPERCASE1!';
-        validatePassword(password, res);
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ error: 'The password must contain at least one lowercase letter.' });
-    });
-
-    it('should return error for password without a digit', () => {
-        const password = 'Password!';
-        validatePassword(password, res);
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ error: 'The password must contain at least one digit.' });
-    });
-
-    it('should return error for password without a special character', () => {
-        const password = 'Password1';
-        validatePassword(password, res);
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ error: 'The password must contain at least one special character (@$!%*?&).' });
-    });
-
-    it('should pass validation for a valid password', () => {
-        const password = 'ValidPassword1!';
-        validatePassword(password, res);
-
-        expect(res.status).not.toHaveBeenCalled();
-        expect(res.json).not.toHaveBeenCalled();
+            if(data.expected === ''){
+                expect(res.status).not.toHaveBeenCalled();
+                expect(res.json).not.toHaveBeenCalled();
+                return;
+            }
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.json).toHaveBeenCalledWith({ error: data.expected });
+        });
     });
 });

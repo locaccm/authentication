@@ -24,4 +24,3 @@ for (const file of modelFiles) {
 
 fs.writeFileSync(schemaPath, schema);
 
-console.log('✅ Schéma Prisma généré avec succès.');
