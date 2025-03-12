@@ -15,8 +15,6 @@ describe('Authentication route tests.', () => {
             const res = await request(app)
                 .post('/auth/signup')
                 .send(data.input);
-            console.log("BJR");
-            console.log(res.statusCode);
             expect(res.statusCode).toEqual(data.expected.responseCode);
             expect(res.body).toHaveProperty(data.expected.messagePath, data.expected.message);
         });
