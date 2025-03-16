@@ -39,7 +39,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
             res.status(400).json({ error: 'Error during registration :' + error.message })
             return;
         } else {
-            console.error("Erreur inconnue", error);
+            console.error("Unknown error", error);
         }
     }
 
