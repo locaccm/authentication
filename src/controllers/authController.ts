@@ -4,7 +4,7 @@ import {validatePassword} from "../middlewares/validatePassword";
 import User from "../models/user";
 import {emailAlreadyExist} from "../middlewares/emailAlreadyExist";
 
-export const signUp = async (req: Request, res: Response) => {
+export const signUp = async (req: Request, res: Response): Promise<void> => {
     const { lname, fname, tel, email, password, status } = req.body;
     const userObject: User = {
         id: '',
@@ -16,7 +16,8 @@ export const signUp = async (req: Request, res: Response) => {
         status
     }
     if(!lname || !fname || !tel || !email || !password || !status){
-        return res.status(400).json({ error: 'Error during registration : missing information' });
+        res.status(400).json({ error: 'Error during registration : missing information' })
+        return;
     }
 
     try {
@@ -27,7 +28,7 @@ export const signUp = async (req: Request, res: Response) => {
                 const user = await registerOwner(userObject);
                 const { OWNN_MDP, ...userWithoutPassword } = user;
 
-                res.status(201).json({ message: 'User created successfully', user: userWithoutPassword });
+                res.status(201).json({ message: 'User created successfully', user: userWithoutPassword })
                 return;
             default:
                 throw new Error('unknown status');
@@ -35,7 +36,7 @@ export const signUp = async (req: Request, res: Response) => {
 
     }catch (error: unknown) {
         if (error instanceof Error) {
-            res.status(400).json({ error: 'Error during registration :' + error.message });
+            res.status(400).json({ error: 'Error during registration :' + error.message })
             return;
         } else {
             console.error("Erreur inconnue", error);

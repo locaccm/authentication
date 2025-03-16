@@ -132,4 +132,4 @@ dist
 prisma/schema.prisma
 prisma/migrations
 
-.idea
+.idea/
