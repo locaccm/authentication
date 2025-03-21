@@ -1,0 +1,29 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model owner {
+  OWNN_ID    String @id @default(uuid())
+  OWNN_LNAME String
+  OWNN_FNAME String
+  OWNN_TEL   String
+  OWNN_MAIL  String
+  OWNN_MDP   String
+}
+
+
+model tenant {
+  TENN_ID    String @id @default(uuid())
+  TENN_LNAME String
+  TENN_FNAME String
+  TENN_TEL   String
+  TENN_MAIL  String
+  TENN_MDP   String
+}
