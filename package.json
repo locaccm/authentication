@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "generate:schema": "ts-node prisma/generateSchema.ts",
-    "migrate": "npm run generate:schema && npx prisma migrate deploy --name init && npx prisma generate",
+    "migrate": "npm run generate:schema && npx prisma migrate dev && npx prisma generate",
     "test": "npm run migrate && jest --coverage --coverageReporters=lcov"
   },
   "repository": {
