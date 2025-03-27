@@ -82,7 +82,7 @@ export const signIn =  async (req: Request, res: Response): Promise<void> => {
         res.status(200).json({ message: 'User connected successfully', user: userObject });
     }catch (error: unknown) {
         if (error instanceof Error) {
-            res.status(400).json({ error: 'Error during registration :' + error.message })
+            res.status(400).json({ error: 'Error during connection :' + error.message })
             return;
         } else {
             console.error("Unknown error", error);
