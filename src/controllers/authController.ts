@@ -94,14 +94,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
             res.status(401).json({ error: 'Invalid password' });
         }
 
-        userObject = {
-            lname: userInBdd.OWNN_LNAME,
-            fname: userInBdd.OWNN_FNAME,
-            tel: userInBdd.OWNN_TEL,
-            email: userInBdd.OWNN_MAIL
-        }
-
-        res.status(200).json({ message: 'User connected successfully', user: userObject });
+        res.status(200).json({ message: 'User connected successfully', user: userInBdd });
     }catch (error: unknown) {
         if (error instanceof Error) {
             res.status(400).json({ error: 'Error during connection :' + error.message })
