@@ -118,7 +118,7 @@ describe('Authentication all route tests.', () => {
     });
   });
 
-  describe('Authentication sing in route tests.', () => {
+  describe('Authentication sign in route tests.', () => {
 
     for (const data of dataSignInTest) {
       it(data.itTitle, async () => {
