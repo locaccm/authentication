@@ -39,11 +39,53 @@ export const connectOwner = async (user: User) => {
   }
   return owner;
 };
+export const connectTenant = async (user: User) => {
+  const tenant = await prisma.tenant.findFirst({
+    where: {
+      TENN_MAIL: user.email,
+    },
+  });
+  if (!tenant) {
+    return null;
+  }
+  return tenant;
+};
 
-export const emailExists = async (email: string) => {
+export const emailOwnerExists = async (email: string) => {
   return prisma.owner.findFirst({
     where: {
       OWNN_MAIL: email,
+    },
+  });
+};
+export const registerTenant = async (user: User) => {
+  if (
+    !user.lname ||
+    !user.fname ||
+    !user.tel ||
+    !user.email ||
+    !user.password ||
+    !user.status
+  ) {
+    throw new Error("missing information");
+  }
+  const hashedPassword = await bcrypt.hash(user.password, 10);
+
+  return prisma.tenant.create({
+    data: {
+      TENN_FNAME: user.fname,
+      TENN_LNAME: user.lname,
+      TENN_TEL: user.tel,
+      TENN_MAIL: user.email,
+      TENN_MDP: hashedPassword,
+    },
+  });
+};
+
+export const emailTenantExists = async (email: string) => {
+  return prisma.tenant.findFirst({
+    where: {
+      TENN_MAIL: email,
     },
   });
 };

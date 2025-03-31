@@ -1,8 +1,9 @@
 import { Response } from "express";
-import { emailExists } from "../services/authService";
+
+import { emailOwnerExists, emailTenantExists } from "../services/authService";
 
 export const emailAlreadyExist = async (email: string, res: Response) => {
-  if (!!(await emailExists(email))) {
+  if (!!(await emailOwnerExists(email)) || !!(await emailTenantExists(email))) {
     throw new Error("Email already exists");
   }
 };
