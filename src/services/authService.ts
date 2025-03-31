@@ -19,11 +19,11 @@ export const registerOwner = async (user: User) => {
 
   return prisma.owner.create({
     data: {
-      OWNN_FNAME: user.fname,
-      OWNN_LNAME: user.lname,
+      OWNC_FNAME: user.fname,
+      OWNC_LNAME: user.lname,
       OWNN_TEL: user.tel,
-      OWNN_MAIL: user.email,
-      OWNN_MDP: hashedPassword,
+      OWNC_MAIL: user.email,
+      OWNC_MDP: hashedPassword,
     },
   });
 };
@@ -31,7 +31,7 @@ export const registerOwner = async (user: User) => {
 export const connectOwner = async (user: User) => {
   const owner = await prisma.owner.findFirst({
     where: {
-      OWNN_MAIL: user.email,
+      OWNC_MAIL: user.email,
     },
   });
   if (!owner) {
@@ -42,7 +42,7 @@ export const connectOwner = async (user: User) => {
 export const connectTenant = async (user: User) => {
   const tenant = await prisma.tenant.findFirst({
     where: {
-      TENN_MAIL: user.email,
+      TENC_MAIL: user.email,
     },
   });
   if (!tenant) {
@@ -54,7 +54,7 @@ export const connectTenant = async (user: User) => {
 export const emailOwnerExists = async (email: string) => {
   return prisma.owner.findFirst({
     where: {
-      OWNN_MAIL: email,
+      OWNC_MAIL: email,
     },
   });
 };
@@ -73,11 +73,11 @@ export const registerTenant = async (user: User) => {
 
   return prisma.tenant.create({
     data: {
-      TENN_FNAME: user.fname,
-      TENN_LNAME: user.lname,
+      TENC_FNAME: user.fname,
+      TENC_LNAME: user.lname,
       TENN_TEL: user.tel,
-      TENN_MAIL: user.email,
-      TENN_MDP: hashedPassword,
+      TENC_MAIL: user.email,
+      TENC_MDP: hashedPassword,
     },
   });
 };
@@ -85,7 +85,7 @@ export const registerTenant = async (user: User) => {
 export const emailTenantExists = async (email: string) => {
   return prisma.tenant.findFirst({
     where: {
-      TENN_MAIL: email,
+      TENC_MAIL: email,
     },
   });
 };

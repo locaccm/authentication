@@ -88,7 +88,7 @@ describe("Authentication all route tests.", () => {
       itTitle: "Should reject a connection because the user is unkown.",
     }, // NOSONAR
     {
-      input: { email: dataSignUpTest[0].input.email + "unknown" },
+      input: { email: dataSignUpTest[0].input.email },
       expected: {
         message: "Error during connection : missing information",
         responseCode: 400,
@@ -192,9 +192,11 @@ describe("Authentication all route tests.", () => {
           let data = JSON.parse(JSON.stringify(dataSignIn));
           data.input.email = status + data.input.email;
           it(data.itTitle, async () => {
+            console.log(data);
             const res = await request(app)
               .post("/auth/signin")
               .send(data.input);
+            console.log(res.body);
             expect(res.statusCode).toEqual(data.expected.responseCode);
             expect(res.body).toHaveProperty(
               data.expected.messagePath,

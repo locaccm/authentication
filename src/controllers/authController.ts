@@ -9,6 +9,8 @@ import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import { emailAlreadyExist } from "../middlewares/emailAlreadyExist";
 import bcrypt from "bcrypt";
+import { mapDbOwnerToModel } from "../map/mapDbOwnerToModel";
+import { mapDbTenantToModel } from "../map/mapDbTenantToModel";
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   const { lname, fname, tel, email, password, status } = req.body;
@@ -42,7 +44,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     switch (status) {
       case "owner": {
         const owner = await registerOwner(userObject);
-        const { OWNN_MDP, ...userWithoutPasswordOwner } = owner;
+        const { OWNC_MDP, ...userWithoutPasswordOwner } = owner;
 
         res.status(201).json({
           message: "User created successfully",
@@ -52,7 +54,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       }
       case "tenant": {
         const tenant = await registerTenant(userObject);
-        const { TENN_MDP, ...userWithoutPasswordtenant } = tenant;
+        const { TENC_MDP, ...userWithoutPasswordtenant } = tenant;
 
         res.status(201).json({
           message: "User created successfully",
@@ -87,18 +89,18 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    let userInBdd: any = await connectOwner(userObject);
+    let userInBdd = mapDbOwnerToModel(await connectOwner(userObject));
     let password;
     if (userInBdd === null) {
-      userInBdd = await connectTenant(userObject);
+      userInBdd = mapDbTenantToModel(await connectTenant(userObject));
       if (userInBdd !== null) {
-        password = userInBdd.TENN_MDP;
+        password = userInBdd.password;
       }
     } else {
-      password = userInBdd.OWNN_MDP;
+      password = userInBdd.password;
     }
 
-    if (userInBdd === null) {
+    if (userInBdd === null || password === undefined) {
       res.status(401).json({ error: "Unkown user" });
       return;
     }
