@@ -13,7 +13,7 @@ export const mapDbTenantToModel = (dbTenant: tenant | null): User | null => {
     tel: dbTenant.TENN_TEL,
     email: dbTenant.TENC_MAIL,
     password: dbTenant.TENC_MDP ?? "",
-    status: "owner",
+    status: "tenant",
   };
   return user;
 };
