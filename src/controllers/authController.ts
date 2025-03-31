@@ -88,7 +88,6 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-
     let userInBdd: any = await connectOwner(userObject);
     let password;
     if (userInBdd === null) {

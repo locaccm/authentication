@@ -7,7 +7,6 @@ export const validatePassword = (password: string, res: Response) => {
       .json({ error: "The password must be at least 8 characters long." });
   }
   if (!hasUppercase(password)) {
-
     return res.status(400).json({
       error: "The password must contain at least one uppercase letter.",
     });
@@ -23,7 +22,6 @@ export const validatePassword = (password: string, res: Response) => {
       .json({ error: "The password must contain at least one digit." });
   }
   if (!hasSpecialCharacter(password)) {
-
     return res.status(400).json({
       error:
         "The password must contain at least one special character (@$!%*?&).",
