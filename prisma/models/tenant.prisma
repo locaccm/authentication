@@ -1,9 +1,9 @@
 
 model tenant {
   TENN_ID    String @id @default(uuid())
-  TENN_LNAME String
-  TENN_FNAME String
+  TENC_LNAME String
+  TENC_FNAME String
   TENN_TEL   String
-  TENN_MAIL  String
-  TENN_MDP   String
+  TENC_MAIL  String
+  TENC_MDP   String
 }
