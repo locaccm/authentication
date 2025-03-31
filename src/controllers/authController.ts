@@ -81,12 +81,34 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const isPasswordValid = await bcrypt.compare(
-      userObject.password,
-      userInBdd.OWNN_MDP,
-    );
-    if (!isPasswordValid) {
-      res.status(401).json({ error: "Invalid password" });
+    try {
+        let userInBdd = await connectOwner(userObject);
+
+        if (userInBdd === null) {
+            res.status(401).json({ error: 'Unkown user' });
+            return;
+        }
+
+        const isPasswordValid = await bcrypt.compare(userObject.password, userInBdd.OWNN_MDP);
+        if(!isPasswordValid){
+            res.status(401).json({ error: 'Invalid password' });
+        }
+
+        userObject = {
+            lname: userInBdd.OWNN_LNAME,
+            fname: userInBdd.OWNN_FNAME,
+            tel: userInBdd.OWNN_TEL,
+            email: userInBdd.OWNN_MAIL
+        }
+
+        res.status(200).json({ message: 'User connected successfully', user: userObject });
+    }catch (error: unknown) {
+        if (error instanceof Error) {
+            res.status(400).json({ error: 'Error during connection :' + error.message })
+            return;
+        } else {
+            console.error("Unknown error", error);
+        }
     }
 
     userObject = {
