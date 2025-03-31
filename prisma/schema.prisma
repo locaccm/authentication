@@ -9,19 +9,19 @@ datasource db {
 }
 
 model owner {
-  OWNN_ID    String @id @default(uuid())
+  OWNN_ID    Int    @id @default(autoincrement())
   OWNC_LNAME String
   OWNC_FNAME String
-  OWNN_TEL   String
+  OWNN_TEL   Int
   OWNC_MAIL  String
   OWNC_MDP   String
 }
 
 model tenant {
-  TENN_ID    String @id @default(uuid())
+  TENN_ID    Int    @id @default(autoincrement())
   TENC_LNAME String
   TENC_FNAME String
-  TENN_TEL   String
+  TENN_TEL   Int
   TENC_MAIL  String
   TENC_MDP   String
 }

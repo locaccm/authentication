@@ -15,7 +15,7 @@ import { mapDbTenantToModel } from "../map/mapDbTenantToModel";
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   const { lname, fname, tel, email, password, status } = req.body;
   const userObject: User = {
-    id: "",
+    id: undefined,
     lname,
     fname,
     tel,

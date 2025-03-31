@@ -12,7 +12,7 @@ describe("Authentication all route tests.", () => {
           "@example.com",
         password: "ValidPass1!",
         lname: "pedro",
-        tel: "123456789",
+        tel: 123456789,
         fname: "toto",
         status: "toDefined",
       },
@@ -31,7 +31,7 @@ describe("Authentication all route tests.", () => {
           "@example.com",
         password: "short",
         lname: "pedro",
-        tel: "123456789",
+        tel: 123456789,
         fname: "toto",
         status: "toDefined",
       },
@@ -140,7 +140,7 @@ describe("Authentication all route tests.", () => {
             "@example.com",
           password: "ValidPass1!",
           lname: "pedro",
-          tel: "123456789",
+          tel: 123456789,
           fname: "toto",
           status: "Spaghetti",
         },
@@ -164,7 +164,7 @@ describe("Authentication all route tests.", () => {
         email: "existingemail@example.com",
         password: "ValidPass1!", // NOSONAR
         lname: "pedro",
-        tel: "123456789",
+        tel: 123456789,
         fname: "toto",
         status: "owner",
       });
@@ -173,7 +173,7 @@ describe("Authentication all route tests.", () => {
         email: "existingemail@example.com",
         password: "ValidPass1!", // NOSONAR
         lname: "pedro",
-        tel: "123456789",
+        tel: 123456789,
         fname: "toto",
         status: "owner",
       });

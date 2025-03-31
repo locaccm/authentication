@@ -1,8 +1,8 @@
 interface User {
-  id?: string;
+  id?: number;
   lname?: string;
   fname?: string;
-  tel?: string;
+  tel?: number;
   email: string;
   password?: string;
   status?: string;
