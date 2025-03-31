@@ -122,8 +122,6 @@ describe("Authentication all route tests.", () => {
             const res = await request(app)
               .post("/auth/signup")
               .send(data.input);
-            console.log(data.input.email);
-            console.log(res.body);
             expect(res.statusCode).toEqual(data.expected.responseCode);
             expect(res.body).toHaveProperty(
               data.expected.messagePath,
@@ -197,8 +195,6 @@ describe("Authentication all route tests.", () => {
             const res = await request(app)
               .post("/auth/signin")
               .send(data.input);
-            console.log(data.input.email);
-            console.log(res.body);
             expect(res.statusCode).toEqual(data.expected.responseCode);
             expect(res.body).toHaveProperty(
               data.expected.messagePath,
