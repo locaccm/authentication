@@ -75,11 +75,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const signIn = async (req: Request, res: Response): Promise<void> => {
-  const { email, password } = req.body;
-  var userObject: User = {
-    email,
-    password,
-  };
+  const userObject = req.body as User;
   if (!userObject.email || !userObject.password) {
     res
       .status(400)
