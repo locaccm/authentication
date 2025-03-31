@@ -5,7 +5,16 @@ import User from "../models/user";
 const prisma = new PrismaClient();
 
 export const registerOwner = async (user : User) => {
+    if(!user.lname
+      || !user.fname
+      || !user.tel
+      || !user.email
+      || !user.password
+      || !user.status){
+        throw new Error('missing information');
+    }
     const hashedPassword = await bcrypt.hash(user.password, 10);
+
     return prisma.owner.create({
         data: {
             OWNN_FNAME: user.fname,
@@ -16,6 +25,18 @@ export const registerOwner = async (user : User) => {
         }
     });
 };
+
+export const connectOwner = async (user : User) => {
+    const owner = await prisma.owner.findFirst({
+        where: {
+            OWNN_MAIL: user.email
+        }
+    });
+    if(!owner){
+        return null;
+    }
+    return owner;
+}
 
 export const emailExists  = async (email: string) => {
 
