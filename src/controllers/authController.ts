@@ -40,7 +40,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 
     await emailAlreadyExist(userObject.email, res);
     switch (status) {
-      case "owner":
+      case "owner": {
         const owner = await registerOwner(userObject);
         const { OWNN_MDP, ...userWithoutPasswordOwner } = owner;
 
@@ -49,7 +49,8 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
           user: userWithoutPasswordOwner,
         });
         return;
-      case "tenant":
+      }
+      case "tenant": {
         const tenant = await registerTenant(userObject);
         const { TENN_MDP, ...userWithoutPasswordtenant } = tenant;
 
@@ -58,8 +59,10 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
           user: userWithoutPasswordtenant,
         });
         return;
-      default:
+      }
+      default: {
         throw new Error("unknown status");
+      }
     }
   } catch (error: unknown) {
     if (error instanceof Error) {

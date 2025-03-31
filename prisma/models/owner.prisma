@@ -1,4 +1,3 @@
-
 model owner {
   OWNN_ID    String @id @default(uuid())
   OWNC_LNAME String

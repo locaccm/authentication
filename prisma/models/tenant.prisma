@@ -1,4 +1,3 @@
-
 model tenant {
   TENN_ID    String @id @default(uuid())
   TENC_LNAME String
