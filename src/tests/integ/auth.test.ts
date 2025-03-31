@@ -192,11 +192,9 @@ describe("Authentication all route tests.", () => {
           let data = JSON.parse(JSON.stringify(dataSignIn));
           data.input.email = status + data.input.email;
           it(data.itTitle, async () => {
-            console.log(data);
             const res = await request(app)
               .post("/auth/signin")
               .send(data.input);
-            console.log(res.body);
             expect(res.statusCode).toEqual(data.expected.responseCode);
             expect(res.body).toHaveProperty(
               data.expected.messagePath,
