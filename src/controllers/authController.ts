@@ -54,11 +54,11 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       }
       case "tenant": {
         const tenant = await registerTenant(userObject);
-        const { TENC_MDP, ...userWithoutPasswordtenant } = tenant;
+        const { TENC_MDP, ...userWithoutPasswordTenant } = tenant;
 
         res.status(201).json({
           message: "User created successfully",
-          user: userWithoutPasswordtenant,
+          user: userWithoutPasswordTenant,
         });
         return;
       }
