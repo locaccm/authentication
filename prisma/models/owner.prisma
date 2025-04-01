@@ -1,9 +1,8 @@
-
 model owner {
-  OWNN_ID    String @id @default(uuid())
-  OWNN_LNAME String
-  OWNN_FNAME String
-  OWNN_TEL   String
-  OWNN_MAIL  String
-  OWNN_MDP   String
+  OWNN_ID    Int    @id @default(autoincrement())
+  OWNC_LNAME String
+  OWNC_FNAME String
+  OWNN_TEL   Int
+  OWNC_MAIL  String
+  OWNC_MDP   String
 }

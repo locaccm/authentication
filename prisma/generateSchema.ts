@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-const schemaPath = path.join(__dirname, 'schema.prisma');
-const modelsDir = path.join(__dirname, 'models');
+const schemaPath = path.join(__dirname, "schema.prisma");
+const modelsDir = path.join(__dirname, "models");
 
 let schema = `
 generator client {
@@ -15,12 +15,13 @@ datasource db {
 }
 `;
 
-const modelFiles = fs.readdirSync(modelsDir).filter(file => file.endsWith('.prisma'));
+const modelFiles = fs
+  .readdirSync(modelsDir)
+  .filter((file) => file.endsWith(".prisma"));
 
 for (const file of modelFiles) {
-    const modelContent = fs.readFileSync(path.join(modelsDir, file), 'utf8');
-    schema += '\n' + modelContent;
+  const modelContent = fs.readFileSync(path.join(modelsDir, file), "utf8");
+  schema += "\n" + modelContent;
 }
 
 fs.writeFileSync(schemaPath, schema);
-
