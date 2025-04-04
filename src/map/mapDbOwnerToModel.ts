@@ -6,7 +6,6 @@ export const mapDbOwnerToModel = (dbOwner: null | owner): User | null => {
     return dbOwner;
   }
 
-
   const user: User = {
     id: dbOwner.OWNN_ID,
     lname: dbOwner.OWNC_LNAME,
