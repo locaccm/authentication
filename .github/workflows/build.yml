@@ -29,6 +29,11 @@ jobs:
       - name: Verify DATABASE_URL
         run: echo "DATABASE_URL is set to $DATABASE_URL"
 
+      - name: Apply database migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: npx prisma migrate deploy
+
       - name: Run tests with coverage
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
