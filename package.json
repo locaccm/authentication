@@ -8,9 +8,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "prettier": "npx prettier . --write",
-    "generate:schema": "ts-node prisma/generateSchema.ts",
-    "migrate:dev": "npm run generate:schema && npx prisma migrate dev --name dev && npx prisma generate",
-    "migrate": "npm run generate:schema && npx prisma migrate deploy && npx prisma generate",
+    "migrate:dev": "npx prisma migrate dev && npx prisma generate",
+    "migrate": "npx prisma migrate deploy && npx prisma generate",
     "test:dev": "npm run prettier && npm run migrate:dev && jest --runInBand --coverage --coverageReporters=lcov",
     "test": "jest --runInBand --coverage --coverageReporters=lcov"
   },
