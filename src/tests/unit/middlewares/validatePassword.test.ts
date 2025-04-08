@@ -47,15 +47,17 @@ describe("Password Validation Tests", () => {
 
   dataTest.forEach((data) => {
     it(data.itTitle, () => {
-      validatePassword(data.input, res);
-
-      if (data.expected === "") {
-        expect(res.status).not.toHaveBeenCalled();
-        expect(res.json).not.toHaveBeenCalled();
-        return;
+      try {
+        validatePassword(data.input, res);
+        if (data.expected !== "") {
+          throw new Error("Expected validation to fail but it passed.");
+        }
+      } catch (error) {
+        if (data.expected === "") {
+          throw new Error("Expected validation to pass but it failed.");
+        }
+        expect((error as Error).message).toBe(data.expected);
       }
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ error: data.expected });
     });
   });
 });

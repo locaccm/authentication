@@ -6,15 +6,22 @@ import { emailAlreadyExist } from "../middlewares/emailAlreadyExist";
 import bcrypt from "bcrypt";
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
-  const user = new User(req.body);
-  if (!user.hasAllAttributesForRegister()) {
-    throw new Error("missing information");
-  }
-
   try {
-    validatePassword(user.USEC_PASSWORD!, res);
+    const { USEC_MAIL, USEC_PASSWORD, USEC_FNAME, USEC_LNAME, USED_BIRTH } =
+      req.body;
+    const user = new User(
+      USEC_MAIL,
+      USEC_PASSWORD,
+      USEC_FNAME,
+      USEC_LNAME,
+      USED_BIRTH,
+    );
+    if (!user.hasAllAttributesForRegister()) {
+      throw new Error("missing information");
+    }
+    validatePassword(user.getPassword()!, res);
 
-    await emailAlreadyExist(user.USEC_MAIL!, res);
+    await emailAlreadyExist(user.getMail()!, res);
     const userInDb = await registerUser(user);
     userInDb.removePassword();
 
@@ -37,19 +44,22 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const signIn = async (req: Request, res: Response): Promise<void> => {
-  const userObject = req.body as User;
-  if (!userObject.hasAllAttributesForConnection()) {
-    throw new Error("missing information");
-  }
-
   try {
-    let userInBdd = await connectUser(userObject);
+    const { USEC_MAIL, USEC_PASSWORD } = req.body;
+    const user = new User(USEC_MAIL, USEC_PASSWORD);
+    if (!user.hasAllAttributesForConnection()) {
+      throw new Error("missing information");
+    }
+    let userInBdd = await connectUser(user);
 
     if (userInBdd === null) {
       throw new Error("Unkown user");
     }
 
-    const isPasswordValid = await bcrypt.compare(userObject.USEC_PASSWORD!, userInBdd.USEC_PASSWORD!);
+    const isPasswordValid = await bcrypt.compare(
+      user.getPassword()!,
+      userInBdd.getPassword()!,
+    );
     if (!isPasswordValid) {
       throw new Error("Invalid password");
     }
@@ -60,8 +70,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
   } catch (error: unknown) {
     if (error instanceof Error) {
       res
-        .status(400)
-
+        .status(401)
         .json({ error: "Error during connection :" + error.message });
       return;
     } else {

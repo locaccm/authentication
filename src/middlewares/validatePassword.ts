@@ -2,30 +2,21 @@ import { Response } from "express";
 
 export const validatePassword = (password: string, res: Response) => {
   if (!hasMinimumLength(password, 8)) {
-    return res
-      .status(400)
-      .json({ error: "The password must be at least 8 characters long." });
+    throw new Error("The password must be at least 8 characters long.");
   }
   if (!hasUppercase(password)) {
-    return res.status(400).json({
-      error: "The password must contain at least one uppercase letter.",
-    });
+    throw new Error("The password must contain at least one uppercase letter.");
   }
   if (!hasLowercase(password)) {
-    return res.status(400).json({
-      error: "The password must contain at least one lowercase letter.",
-    });
+    throw new Error("The password must contain at least one lowercase letter.");
   }
   if (!hasDigit(password)) {
-    return res
-      .status(400)
-      .json({ error: "The password must contain at least one digit." });
+    throw new Error("The password must contain at least one digit.");
   }
   if (!hasSpecialCharacter(password)) {
-    return res.status(400).json({
-      error:
-        "The password must contain at least one special character (@$!%*?&).",
-    });
+    throw new Error(
+      "The password must contain at least one special character (@$!%*?&).",
+    );
   }
 };
 

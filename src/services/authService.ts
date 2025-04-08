@@ -8,33 +8,33 @@ export const registerUser = async (user: User) => {
   if (!user.hasAllAttributesForRegister()) {
     throw new Error("missing information");
   }
-  user.USEC_PASSWORD = await bcrypt.hash(user.USEC_PASSWORD!, 10);
+  user.setPassword(await bcrypt.hash(user.getPassword()!, 10));
 
   const userInDb = await prisma.user.create({
     data: {
-      ...user
+      ...user,
     },
   });
 
-  return new User(user.USEC_MAIL).mapDbUserToModel(userInDb);
+  return new User(user.getMail()).mapDbUserToModel(userInDb);
 };
 
 export const connectUser = async (user: User) => {
   const userDb = await prisma.user.findFirst({
     where: {
-      USEC_MAIL: user.USEC_MAIL,
+      USEC_MAIL: user.getMail(),
     },
   });
   if (!userDb) {
     return null;
   }
-  return new User(user.USEC_MAIL).mapDbUserToModel(userDb);
+  return new User(user.getMail()).mapDbUserToModel(userDb);
 };
 
 export const emailUserExists = async (email: string) => {
-  return !!prisma.user.findFirst({
+  return !!(await prisma.user.findFirst({
     where: {
       USEC_MAIL: email,
     },
-  });
+  }));
 };
