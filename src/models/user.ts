@@ -43,50 +43,11 @@ class User {
   public getMail() {
     return this.USEC_MAIL;
   }
-  public getFname() {
-    return this.USEC_FNAME;
-  }
-  public getLname() {
-    return this.USEC_LNAME;
-  }
   public getPassword() {
     return this.USEC_PASSWORD;
   }
-  public getType() {
-    return this.USEC_TYPE;
-  }
-  public getBirth() {
-    return this.USED_BIRTH;
-  }
-  public getId() {
-    return this.USEN_ID;
-  }
-  public setEmail(email: string) {
-    this.USEC_MAIL = email;
-    return this;
-  }
-  public setFname(fname: string) {
-    this.USEC_FNAME = fname;
-    return this;
-  }
-  public setLname(lname: string) {
-    this.USEC_LNAME = lname;
-    return this;
-  }
   public setPassword(password: string) {
     this.USEC_PASSWORD = password;
-    return this;
-  }
-  public setType(type: string) {
-    this.USEC_TYPE = type;
-    return this;
-  }
-  public setBirth(birth: Date) {
-    this.USED_BIRTH = birth;
-    return this;
-  }
-  public setId(id: number) {
-    this.USEN_ID = id;
     return this;
   }
 }
