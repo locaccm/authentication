@@ -3,7 +3,7 @@ import { connectUser, registerUser } from "../services/authService";
 import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import { emailAlreadyExist } from "../middlewares/emailAlreadyExist";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
