@@ -21,7 +21,7 @@ constructor(
 ) {}
 
   public hasAllAttributesForRegister(){
-    return this.USEC_LNAME && this.USEC_FNAME && this.USEC_MAIL && this.USEC_PASSWORD && this.USEC_TYPE
+    return this.USEC_LNAME && this.USEC_FNAME && this.USEC_MAIL && this.USEC_PASSWORD && this.USED_BIRTH;
   }
 
   public hasAllAttributesForConnection(){

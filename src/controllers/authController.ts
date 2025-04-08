@@ -44,7 +44,6 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
 
   try {
     let userInBdd = await connectUser(userObject);
-    let password;
 
     if (userInBdd === null) {
       throw new Error("Unkown user");
