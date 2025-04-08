@@ -49,7 +49,11 @@ describe("Authentication all route tests.", () => {
         "toto",
       ),
       expected: {
+<<<<<<< HEAD
         message: "Error during registration :missing registration information",
+=======
+        message: "Error during registration :missing information",
+>>>>>>> 2f62192 (Feat : AIC-106 update test authentication with new db)
         responseCode: 400,
         messagePath: "error",
       },
