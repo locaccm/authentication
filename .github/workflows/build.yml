@@ -33,7 +33,11 @@ jobs:
       - name: Apply database migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+<<<<<<< HEAD
         run: npx prisma migrate deploy && npx prisma generate
+=======
+        run: npm run generate:schema && npx prisma migrate deploy && npx prisma generate
+>>>>>>> 98b6d85 (Feature: [AIC-063] - add dockerfile (#19) (#25))
 
       - name: Set JWT SECRET
         run: echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
