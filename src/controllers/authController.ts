@@ -8,7 +8,6 @@ import jwt from "jsonwebtoken";
 
 const tokenDuration = 1000 * 60 * 60;
 
-
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
     const {
