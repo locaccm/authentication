@@ -4,7 +4,6 @@ import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import { emailAlreadyExist } from "../middlewares/emailAlreadyExist";
 import bcrypt from "bcryptjs";
-
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
     const { USEC_MAIL, USEC_PASSWORD, USEC_FNAME, USEC_LNAME, USED_BIRTH } =
