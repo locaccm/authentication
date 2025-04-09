@@ -4,6 +4,9 @@ import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import { emailAlreadyExist } from "../middlewares/emailAlreadyExist";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+const tokenDuration = 1000 * 60 * 60;
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -63,9 +66,13 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       throw new Error("Invalid password");
     }
 
+    const token = jwt.sign({userId: userInBdd.getId()}, process.env.JWT_SECRET!, {
+      expiresIn: tokenDuration,
+    })
+
     res
       .status(200)
-      .json({ message: "User connected successfully", user: userInBdd });
+      .json({ message: "User connected successfully", user: userInBdd, token: token });
   } catch (error: unknown) {
     if (error instanceof Error) {
       res
