@@ -34,6 +34,7 @@ export const checkAccess = async (
       res
         .status(401)
         .json({ error: "Error during access check :" + error.message });
+
       return;
     } else {
       console.error("Unknown error", error);
