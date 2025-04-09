@@ -8,7 +8,7 @@ import {
 import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import { emailAlreadyExist } from "../middlewares/emailAlreadyExist";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { mapDbOwnerToModel } from "../map/mapDbOwnerToModel";
 import { mapDbTenantToModel } from "../map/mapDbTenantToModel";
 
