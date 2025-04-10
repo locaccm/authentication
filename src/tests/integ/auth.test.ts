@@ -49,7 +49,7 @@ describe("Authentication all route tests.", () => {
         "toto",
       ),
       expected: {
-        message: "Error during registration :missing information",
+        message: "Error during registration :missing registration information",
         responseCode: 400,
         messagePath: "error",
       },
