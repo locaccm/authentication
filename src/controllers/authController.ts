@@ -1,71 +1,34 @@
 import { Request, Response } from "express";
-import {
-  connectOwner,
-  connectTenant,
-  registerOwner,
-  registerTenant,
-} from "../services/authService";
+import { connectUser, registerUser } from "../services/authService";
 import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import { emailAlreadyExist } from "../middlewares/emailAlreadyExist";
 import bcrypt from "bcryptjs";
-import { mapDbOwnerToModel } from "../map/mapDbOwnerToModel";
-import { mapDbTenantToModel } from "../map/mapDbTenantToModel";
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
-  const { lname, fname, tel, email, password, status } = req.body;
-  const userObject: User = {
-    id: undefined,
-    lname,
-    fname,
-    tel,
-    email,
-    password,
-    status,
-  };
-  if (
-    !userObject.lname ||
-    !userObject.fname ||
-    !userObject.tel ||
-    !userObject.email ||
-    !userObject.password ||
-    !userObject.status
-  ) {
-    res
-      .status(400)
-      .json({ error: "Error during registration : missing information" });
-    return;
-  }
-
   try {
-    validatePassword(userObject.password, res);
-
-    await emailAlreadyExist(userObject.email, res);
-    switch (status) {
-      case "owner": {
-        const owner = await registerOwner(userObject);
-        const { OWNC_MDP, ...userWithoutPasswordOwner } = owner;
-
-        res.status(201).json({
-          message: "User created successfully",
-          user: userWithoutPasswordOwner,
-        });
-        return;
-      }
-      case "tenant": {
-        const tenant = await registerTenant(userObject);
-        const { TENC_MDP, ...userWithoutPasswordTenant } = tenant;
-
-        res.status(201).json({
-          message: "User created successfully",
-          user: userWithoutPasswordTenant,
-        });
-        return;
-      }
-      default: {
-        throw new Error("unknown status");
-      }
+    const { USEC_MAIL, USEC_PASSWORD, USEC_FNAME, USEC_LNAME, USED_BIRTH } =
+      req.body;
+    const user = new User(
+      USEC_MAIL,
+      USEC_PASSWORD,
+      USEC_FNAME,
+      USEC_LNAME,
+      USED_BIRTH,
+    );
+    if (!user.hasAllAttributesForRegister()) {
+      throw new Error("missing registration information");
     }
+    validatePassword(user.getPassword()!, res);
+    await emailAlreadyExist(user.getMail(), res);
+    const userInDb = await registerUser(user);
+    userInDb.removePassword();
+
+    res.status(201).json({
+      message: "User created successfully",
+      user: userInDb,
+    });
+    return;
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error(error);
@@ -80,34 +43,24 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const signIn = async (req: Request, res: Response): Promise<void> => {
-  const userObject = req.body as User;
-  if (!userObject.email || !userObject.password) {
-    res
-      .status(400)
-      .json({ error: "Error during connection : missing information" });
-    return;
-  }
-
   try {
-    let userInBdd = mapDbOwnerToModel(await connectOwner(userObject));
-    let password;
+    const { USEC_MAIL, USEC_PASSWORD } = req.body;
+    const user = new User(USEC_MAIL, USEC_PASSWORD);
+    if (!user.hasAllAttributesForConnection()) {
+      throw new Error("missing information");
+    }
+    let userInBdd = await connectUser(user);
+
     if (userInBdd === null) {
-      userInBdd = mapDbTenantToModel(await connectTenant(userObject));
-      if (userInBdd !== null) {
-        password = userInBdd.password;
-      }
-    } else {
-      password = userInBdd.password;
+      throw new Error("Unkown user");
     }
 
-    if (userInBdd === null || password === undefined) {
-      res.status(401).json({ error: "Unkown user" });
-      return;
-    }
-
-    const isPasswordValid = await bcrypt.compare(userObject.password, password);
+    const isPasswordValid = await bcrypt.compare(
+      user.getPassword()!,
+      userInBdd.getPassword()!,
+    );
     if (!isPasswordValid) {
-      res.status(401).json({ error: "Invalid password" });
+      throw new Error("Invalid password");
     }
 
     res
@@ -116,8 +69,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
   } catch (error: unknown) {
     if (error instanceof Error) {
       res
-        .status(400)
-
+        .status(401)
         .json({ error: "Error during connection :" + error.message });
       return;
     } else {
