@@ -79,9 +79,9 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t profile-management:latest .
+        docker build -t authentication:latest .
 
     - name: Tag & Push to Artifact Registry
       run: |
-        docker tag profile-management:latest europe-west1-docker.pkg.dev/intricate-pad-455413-f7/locaccm-repo-docker/profile-management:latest
-        docker push europe-west1-docker.pkg.dev/intricate-pad-455413-f7/locaccm-repo-docker/profile-management:latest
+        docker tag authentication:latest europe-west1-docker.pkg.dev/intricate-pad-455413-f7/locaccm-repo-docker/authentication:latest
+        docker push europe-west1-docker.pkg.dev/intricate-pad-455413-f7/locaccm-repo-docker/authentication:latest
