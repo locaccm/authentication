@@ -63,25 +63,28 @@ jobs:
       - name: Run ESLint
         run: npx eslint .
   
-  artifact:
-    - name: Set up Docker
-      uses: docker/setup-buildx-action@v2
+  docker-build:
+    name: Docker Build and Push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
 
-    - name: Authenticate with Google Cloud
-      uses: google-github-actions/auth@v1
-      with:
-        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-        project_id: intricate-pad-455413-f7
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          project_id: intricate-pad-455413-f7
 
-    - name: Configure Docker to use gcloud as a credential helper
-      run: |
-        gcloud auth configure-docker europe-west1-docker.pkg.dev
+      - name: Configure Docker to use gcloud as a credential helper
+        run: |
+          gcloud auth configure-docker europe-west1-docker.pkg.dev
 
-    - name: Build Docker image
-      run: |
-        docker build -t authentication:latest .
+      - name: Build Docker image
+        run: |
+          docker build -t authentication:latest .
 
-    - name: Tag & Push to Artifact Registry
-      run: |
-        docker tag authentication:latest europe-west1-docker.pkg.dev/intricate-pad-455413-f7/locaccm-repo-docker/authentication:latest
-        docker push europe-west1-docker.pkg.dev/intricate-pad-455413-f7/locaccm-repo-docker/authentication:latest
+      - name: Tag & Push to Artifact Registry
+        run: |
+          docker tag authentication:latest europe-west1-docker.pkg.dev/intricate-pad-455413-f7/locaccm-repo-docker/authentication:latest
+          docker push europe-west1-docker.pkg.dev/intricate-pad-455413-f7/locaccm-repo-docker/authentication:latest
