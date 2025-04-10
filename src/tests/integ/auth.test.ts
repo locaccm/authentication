@@ -1,182 +1,141 @@
 import request from "supertest";
 import app from "../../index";
+import User from "../../models/user";
 
 describe("Authentication all route tests.", () => {
-  const statusData = ["owner", "tenant"];
+  const now = new Date();
+  const maxTimeTest = 1000 * 60 * 3;
   const dataSignUpTest = [
     {
-      input: {
-        email:
-          "testapprouved" +
-          Math.floor(Math.random() * 1000000) +
-          "@example.com",
-        password: "ValidPass1!",
-        lname: "pedro",
-        tel: 123456789,
-        fname: "toto",
-        status: "toDefined",
-      },
+      input: new User(
+        "testapprouved" + Math.floor(Math.random() * 1000000) + "@example.com",
+        "ValidPass1!",
+        "pedro",
+        "toto",
+        now,
+      ),
       expected: {
         message: "User created successfully",
         responseCode: 201,
         messagePath: "message",
       },
       itTitle: "Should register a new owner.",
-    }, // NOSONAR
+    },
     {
-      input: {
-        email:
-          "testbadpassword" +
+      input: new User(
+        "testbadpassword" +
           Math.floor(Math.random() * 1000000) +
           "@example.com",
-        password: "short",
-        lname: "pedro",
-        tel: 123456789,
-        fname: "toto",
-        status: "toDefined",
-      },
+        "short",
+        "pedro",
+        "toto",
+        now,
+      ),
       expected: {
-        message: "The password must be at least 8 characters long.",
+        message:
+          "Error during registration :The password must be at least 8 characters long.",
         responseCode: 400,
         messagePath: "error",
       },
       itTitle: "Should reject a registration with a short password.",
-    }, // NOSONAR
+    },
     {
-      input: {
-        email:
-          "testbadpassword" +
+      input: new User(
+        "forgottenInformation" +
           Math.floor(Math.random() * 1000000) +
           "@example.com",
-        password: "short",
-        lname: "pedro",
-        fname: "toto",
-        status: "toDefined",
-      },
+        "ValidPass1!",
+        "pedro",
+        "toto",
+      ),
       expected: {
-        message: "Error during registration : missing information",
+        message: "Error during registration :missing registration information",
         responseCode: 400,
         messagePath: "error",
       },
       itTitle: "Should reject a registration with a missing information.",
-    }, // NOSONAR
+    },
   ];
 
   const dataSignInTest = [
     {
-      input: {
-        email: dataSignUpTest[0].input.email,
-        password: dataSignUpTest[0].input.password,
-      },
+      input: new User(
+        dataSignUpTest[0].input.getMail(),
+        dataSignUpTest[0].input.getPassword(),
+      ),
       expected: {
         message: "User connected successfully",
         responseCode: 200,
         messagePath: "message",
       },
       itTitle: "Should connect user.",
-    }, // NOSONAR
+    },
     {
-      input: {
-        email: dataSignUpTest[0].input.email + "unknown",
-        password: dataSignUpTest[0].input.password,
-      },
+      input: new User(
+        dataSignUpTest[0].input.getMail() + "unknown",
+        dataSignUpTest[0].input.getPassword(),
+      ),
       expected: {
-        message: "Unkown user",
+        message: "Error during connection :Unkown user",
         responseCode: 401,
         messagePath: "error",
       },
       itTitle: "Should reject a connection because the user is unkown.",
-    }, // NOSONAR
+    },
     {
-      input: { email: dataSignUpTest[0].input.email },
+      input: new User(dataSignUpTest[0].input.getMail()),
       expected: {
-        message: "Error during connection : missing information",
-        responseCode: 400,
+        message: "Error during connection :missing information",
+        responseCode: 401,
         messagePath: "error",
       },
       itTitle: "Should reject a connection with a missing information.",
-    }, // NOSONAR
+    },
     {
-      input: {
-        email: dataSignUpTest[0].input.email,
-        password: "wrongPassword123",
-      },
+      input: new User(dataSignUpTest[0].input.getMail(), "wrongPassword123"),
       expected: {
-        message: "Invalid password",
+        message: "Error during connection :Invalid password",
         responseCode: 401,
         messagePath: "error",
       },
       itTitle: "Should reject a connection because the password is not valid.",
-    }, // NOSONAR
+    },
   ];
 
   describe("Sing up", () => {
-    for (const status of statusData) {
-      describe(status, () => {
-        for (const dataSignUp of dataSignUpTest) {
-          let data = JSON.parse(JSON.stringify(dataSignUp));
-
-          data.input.status = status;
-          data.input.email = status + data.input.email;
-          it(data.itTitle, async () => {
-            const res = await request(app)
-              .post("/auth/signup")
-              .send(data.input);
-            expect(res.statusCode).toEqual(data.expected.responseCode);
-            expect(res.body).toHaveProperty(
-              data.expected.messagePath,
-              data.expected.message,
-            );
-          });
-        }
-      });
-    }
-    it("Should reject a registration with an unknown status.", async () => {
-      const data = {
-        input: {
-          email:
-            "testunknownStatus" +
-            Math.floor(Math.random() * 1000000) +
-            "@example.com",
-          password: "ValidPass1!",
-          lname: "pedro",
-          tel: 123456789,
-          fname: "toto",
-          status: "Spaghetti",
+    for (const dataSignUp of dataSignUpTest) {
+      let data = JSON.parse(JSON.stringify(dataSignUp));
+      it(
+        data.itTitle,
+        async () => {
+          const res = await request(app).post("/auth/signup").send(data.input);
+          expect(res.statusCode).toEqual(data.expected.responseCode);
+          expect(res.body).toHaveProperty(
+            data.expected.messagePath,
+            data.expected.message,
+          );
         },
-        expected: {
-          message: "Error during registration :unknown status",
-          responseCode: 400,
-          messagePath: "error",
-        },
-      }; // NOSONAR
-
-      const res = await request(app).post("/auth/signup").send(data.input);
-      expect(res.statusCode).toEqual(data.expected.responseCode);
-      expect(res.body).toHaveProperty(
-        data.expected.messagePath,
-        data.expected.message,
+        maxTimeTest,
       );
-    });
+    }
 
     it("Should reject a registration with an already exist email.", async () => {
-      const originalRes = await request(app).post("/auth/signup").send({
-        email: "existingemail@example.com",
-        password: "ValidPass1!", // NOSONAR
-        lname: "pedro",
-        tel: 123456789,
-        fname: "toto",
-        status: "owner",
-      });
+      const userAlreadyExist = new User(
+        "tesAlreadyExist" +
+          Math.floor(Math.random() * 1000000) +
+          "@example.com",
+        "ValidPass1!",
+        "pedro",
+        "toto",
+        now,
+      );
+      const originalRes = await request(app)
+        .post("/auth/signup")
+        .send(userAlreadyExist);
 
-      const res = await request(app).post("/auth/signup").send({
-        email: "existingemail@example.com",
-        password: "ValidPass1!", // NOSONAR
-        lname: "pedro",
-        tel: 123456789,
-        fname: "toto",
-        status: "owner",
-      });
+      const res = await request(app)
+        .post("/auth/signup")
+        .send(userAlreadyExist);
       expect(res.statusCode).toEqual(400);
       expect(res.body).toHaveProperty(
         "error",
@@ -186,22 +145,15 @@ describe("Authentication all route tests.", () => {
   });
 
   describe("Sign in", () => {
-    for (const status of statusData) {
-      describe(status, () => {
-        for (const dataSignIn of dataSignInTest) {
-          let data = JSON.parse(JSON.stringify(dataSignIn));
-          data.input.email = status + data.input.email;
-          it(data.itTitle, async () => {
-            const res = await request(app)
-              .post("/auth/signin")
-              .send(data.input);
-            expect(res.statusCode).toEqual(data.expected.responseCode);
-            expect(res.body).toHaveProperty(
-              data.expected.messagePath,
-              data.expected.message,
-            );
-          });
-        }
+    for (const dataSignIn of dataSignInTest) {
+      let data = JSON.parse(JSON.stringify(dataSignIn));
+      it(data.itTitle, async () => {
+        const res = await request(app).post("/auth/signin").send(data.input);
+        expect(res.statusCode).toEqual(data.expected.responseCode);
+        expect(res.body).toHaveProperty(
+          data.expected.messagePath,
+          data.expected.message,
+        );
       });
     }
   });
