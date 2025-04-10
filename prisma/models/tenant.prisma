@@ -1,8 +1,0 @@
-model tenant {
-  TENN_ID    Int    @id @default(autoincrement())
-  TENC_LNAME String
-  TENC_FNAME String
-  TENN_TEL   Int
-  TENC_MAIL  String
-  TENC_MDP   String
-}
