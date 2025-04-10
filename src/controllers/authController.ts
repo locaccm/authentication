@@ -17,8 +17,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       USED_BIRTH,
     );
     if (!user.hasAllAttributesForRegister()) {
-      throw new Error("missing information");
-    }
+      throw new Error("missing registration information");
     validatePassword(user.getPassword()!, res);
 
     await emailAlreadyExist(user.getMail(), res);
