@@ -2,7 +2,7 @@ import { User as UserDb } from "@prisma/client";
 
 class User {
   constructor(
-    private USEC_MAIL: string,
+    private readonly USEC_MAIL: string,
     private USEC_PASSWORD?: string,
     private USEC_FNAME?: string,
     private USEC_LNAME?: string,

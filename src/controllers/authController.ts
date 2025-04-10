@@ -21,7 +21,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     }
     validatePassword(user.getPassword()!, res);
 
-    await emailAlreadyExist(user.getMail()!, res);
+    await emailAlreadyExist(user.getMail(), res);
     const userInDb = await registerUser(user);
     userInDb.removePassword();
 
