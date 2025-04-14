@@ -53,7 +53,7 @@ class User {
   public getId() {
     return this.USEN_ID;
   }
-  getType() {
+  public getType() {
     return this.USEC_TYPE;
   }
 }
