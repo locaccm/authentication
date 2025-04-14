@@ -66,7 +66,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       throw new Error("Invalid password");
     }
 
-    const token = jwt.sign({userId: userInBdd.getId()}, process.env.JWT_SECRET!, {
+    const token = jwt.sign({userId: userInBdd.getId(), status: userInBdd.getType()!}, process.env.JWT_SECRET!, {
       expiresIn: tokenDuration,
     })
 

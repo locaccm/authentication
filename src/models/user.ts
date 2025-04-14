@@ -53,6 +53,10 @@ class User {
   public getId() {
     return this.USEN_ID;
   }
+
+  getType() {
+    return this.USEC_TYPE;
+  }
 }
 
 export default User;
