@@ -17,10 +17,13 @@ describe("access check", () => {
 const tokens: { [key: string]: String } = {
   owner: "",
   tenant: "",
-}
+};
 describe("access check", () => {
+<<<<<<< HEAD
 
 >>>>>>> b2056da (Feat: aic-54 token with test)
+=======
+>>>>>>> 4e51096 (chore: prettier)
   beforeAll(async () => {
     const now = new Date();
     const users = [
@@ -65,10 +68,14 @@ describe("access check", () => {
       }
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
   });
 =======
   })
 >>>>>>> b2056da (Feat: aic-54 token with test)
+=======
+  });
+>>>>>>> 4e51096 (chore: prettier)
 
   describe("All access check tests.", () => {
     Object.entries(tokens).forEach(([roleName]) => {
@@ -76,11 +83,15 @@ describe("access check", () => {
         for (const [role, permissions] of Object.entries(rolesPermissions)) {
           describe(`Test with right of ${role}`, () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4e51096 (chore: prettier)
             testByAllFunction(
               roleName,
               permissions,
               roleName != role && role != "everyone",
             );
+<<<<<<< HEAD
           });
         }
       });
@@ -116,20 +127,31 @@ function testByAllFunction(
         .send({ token, rightName });
 =======
             testByAllFunction(roleName, permissions, (roleName != role) && (role != "everyone"));
+=======
+>>>>>>> 4e51096 (chore: prettier)
           });
-        };
+        }
       });
     });
   });
-})
+});
 
-
-function testByAllFunction(roleName: String, rights: String[], shouldFail: boolean) {
+function testByAllFunction(
+  roleName: String,
+  rights: String[],
+  shouldFail: boolean,
+) {
   for (const rightName of rights) {
     it(`${rightName}`, async () => {
       const token = tokens[roleName.toString()];
+<<<<<<< HEAD
       const res = await request(app).post("/access/check").send({ token, rightName });
 >>>>>>> b2056da (Feat: aic-54 token with test)
+=======
+      const res = await request(app)
+        .post("/access/check")
+        .send({ token, rightName });
+>>>>>>> 4e51096 (chore: prettier)
       if (shouldFail) {
         expect(res.statusCode).toEqual(403);
         expect(res.body).toHaveProperty("message", "Access denied");
@@ -140,7 +162,11 @@ function testByAllFunction(roleName: String, rights: String[], shouldFail: boole
     });
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 =======
 }
 >>>>>>> b2056da (Feat: aic-54 token with test)
+=======
+}
+>>>>>>> 4e51096 (chore: prettier)
