@@ -47,6 +47,9 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: npm run test -- --coverage --coverageReporters=lcov
 
+      - name: Set JWT SECRET
+        run: echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
