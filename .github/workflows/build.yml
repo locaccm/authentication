@@ -39,6 +39,7 @@ jobs:
         run: npm run generate:schema && npx prisma migrate deploy && npx prisma generate
 >>>>>>> 98b6d85 (Feature: [AIC-063] - add dockerfile (#19) (#25))
 
+<<<<<<< HEAD
       - name: Set JWT SECRET
         run: echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
 
@@ -51,11 +52,19 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: npm run test -- --coverage --coverageReporters=lcov
 
+=======
+>>>>>>> 743d930 (fix: put JWT_SECRET because i'm an idiot)
       - name: Set JWT SECRET
         run: echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
 
       - name: Verify JWT SECRET
         run: echo "JWT_SECRET is set to $JWT_SECRET"
+
+      - name: Run tests with coverage
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: npm run test -- --coverage --coverageReporters=lcov
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
