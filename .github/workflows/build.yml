@@ -50,6 +50,9 @@ jobs:
       - name: Set JWT SECRET
         run: echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
 
+      - name: Verify JWT SECRET
+        run: echo "JWT_SECRET is set to $JWT_SECRET"
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
