@@ -64,6 +64,25 @@ describe("access check", () => {
       });
     });
   });
+
+  describe("missing token", () => {
+    it("Should reject a request without token", async () => {
+      const res = await request(app).post("/access/check").send({
+        rightName: "access",
+      });
+      expect(res.statusCode).toEqual(401);
+      expect(res.body).toHaveProperty("message", "Missing token");
+    });
+  });
+  describe("missing rightName", () => {
+    it("Should reject a request without rightName", async () => {
+      const res = await request(app).post("/access/check").send({
+        token: tokens["owner"],
+      });
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toHaveProperty("message", "Missing rightName");
+    });
+  });
 });
 
 function testByAllFunction(
