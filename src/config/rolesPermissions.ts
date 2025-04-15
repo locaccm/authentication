@@ -2,6 +2,6 @@
 
 export const rolesPermissions: Record<string, string[]> = {
   owner: ['setHouse', 'getHouse', 'updateHouse', "deleteHouse", "getTenantsByOwner", "getTenants", "addCaution", "updateCaution", "deleteCaution", "addTenantWithHousing", "updateTenantWithHousing", "deleteTenantWithHousing"],
-  tenant: ['right2', "postDocument", "deleteDocument"],
-  everyone: ['updateProfile', 'setProfile', 'getProfile', 'deleteProfile', "getDocument", "getOwners", "getOwnersById", "getTenantById", "getOwnerByTenant", "getMessage", "sendMessage", "createEvent", "getEventById", "getAllEvents", "updateEvent", "deleteEvent", "getUpcomingEvents", "getEventsByCalendar", "filterEvents", "createSmtpServer", "createReminder", "createTemplateEmail"]
+  tenant: [],
+  everyone: ['updateProfile', "postDocument", "deleteDocument", 'setProfile', 'getProfile', 'deleteProfile', "getDocument", "getOwners", "getOwnersById", "getTenantById", "getOwnerByTenant", "getMessage", "sendMessage", "createEvent", "getEventById", "getAllEvents", "updateEvent", "deleteEvent", "getUpcomingEvents", "getEventsByCalendar", "filterEvents", "createSmtpServer", "createReminder", "createTemplateEmail"]
 };
