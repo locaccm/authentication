@@ -83,13 +83,11 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       },
     );
 
-    res
-      .status(200)
-      .json({
-        message: "User connected successfully",
-        user: userInBdd,
-        token: token,
-      });
+    res.status(200).json({
+      message: "User connected successfully",
+      user: userInBdd,
+      token: token,
+    });
   } catch (error: unknown) {
     if (error instanceof Error) {
       res
