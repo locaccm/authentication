@@ -8,9 +8,8 @@ import { rolesPermissions } from "../../config/rolesPermissions";
 const tokens: { [key: string]: String } = {
   owner: "",
   tenant: "",
-}
+};
 describe("access check", () => {
-
   beforeAll(async () => {
     const now = new Date();
     const users = [
@@ -46,27 +45,36 @@ describe("access check", () => {
         console.error("User  type is undefined for user:", user);
       }
     }
-  })
+  });
 
   describe("All access check tests.", () => {
     Object.entries(tokens).forEach(([roleName]) => {
       describe(`${roleName}`, () => {
         for (const [role, permissions] of Object.entries(rolesPermissions)) {
           describe(`Test with right of ${role}`, () => {
-            testByAllFunction(roleName, permissions, (roleName != role) && (role != "everyone"));
+            testByAllFunction(
+              roleName,
+              permissions,
+              roleName != role && role != "everyone",
+            );
           });
-        };
+        }
       });
     });
   });
-})
+});
 
-
-function testByAllFunction(roleName: String, rights: String[], shouldFail: boolean) {
+function testByAllFunction(
+  roleName: String,
+  rights: String[],
+  shouldFail: boolean,
+) {
   for (const rightName of rights) {
     it(`${rightName}`, async () => {
       const token = tokens[roleName.toString()];
-      const res = await request(app).post("/access/check").send({ token, rightName });
+      const res = await request(app)
+        .post("/access/check")
+        .send({ token, rightName });
       if (shouldFail) {
         expect(res.statusCode).toEqual(403);
         expect(res.body).toHaveProperty("message", "Access denied");
