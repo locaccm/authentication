@@ -10,15 +10,21 @@ const tokenDuration = 1000 * 60 * 60;
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { USEC_MAIL, USEC_PASSWORD, USEC_FNAME, USEC_LNAME, USED_BIRTH, USEC_TYPE } =
-      req.body;
+    const {
+      USEC_MAIL,
+      USEC_PASSWORD,
+      USEC_FNAME,
+      USEC_LNAME,
+      USED_BIRTH,
+      USEC_TYPE,
+    } = req.body;
     const user = new User(
       USEC_MAIL,
       USEC_PASSWORD,
       USEC_FNAME,
       USEC_LNAME,
       USED_BIRTH,
-      USEC_TYPE
+      USEC_TYPE,
     );
     if (!user.hasAllAttributesForRegister()) {
       throw new Error("missing registration information");
@@ -67,13 +73,21 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       throw new Error("Invalid password");
     }
 
-    const token = jwt.sign({userId: userInBdd.getId(), status: userInBdd.getType()!}, process.env.JWT_SECRET!, {
-      expiresIn: tokenDuration,
-    })
+    const token = jwt.sign(
+      { userId: userInBdd.getId(), status: userInBdd.getType()! },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: tokenDuration,
+      },
+    );
 
     res
       .status(200)
-      .json({ message: "User connected successfully", user: userInBdd, token: token });
+      .json({
+        message: "User connected successfully",
+        user: userInBdd,
+        token: token,
+      });
   } catch (error: unknown) {
     if (error instanceof Error) {
       res
