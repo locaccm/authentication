@@ -4,6 +4,7 @@ import app from "../../index";
 import { string } from "zod";
 import { rolesPermissions } from "../../config/rolesPermissions";
 
+<<<<<<< HEAD
 
 const tokens: { [key: string]: String } = {
   owner: "",
@@ -11,6 +12,15 @@ const tokens: { [key: string]: String } = {
 };
 
 describe("access check", () => {
+=======
+//beforeAll(async () => await new Promise(resolve => setTimeout(resolve, 5000)));
+const tokens: { [key: string]: String } = {
+  owner: "",
+  tenant: "",
+}
+describe("access check", () => {
+
+>>>>>>> b2056da (Feat: aic-54 token with test)
   beforeAll(async () => {
     const now = new Date();
     const users = [
@@ -34,11 +44,17 @@ describe("access check", () => {
 
     for (const user of users) {
       const signupRes = await request(app).post("/auth/signup").send(user);
+<<<<<<< HEAD
       expect(signupRes.body).toHaveProperty("message", "User created successfully");
       expect(signupRes.status).toBe(201);
 
       const signinRes = await request(app).post("/auth/signin").send(user);
       expect(signinRes.body).toHaveProperty("message", "User connected successfully");
+=======
+      expect(signupRes.status).toBe(201);
+
+      const signinRes = await request(app).post("/auth/signin").send(user);
+>>>>>>> b2056da (Feat: aic-54 token with test)
       expect(signinRes.status).toBe(200);
 
       const userType = user.getType();
@@ -48,13 +64,18 @@ describe("access check", () => {
         console.error("User  type is undefined for user:", user);
       }
     }
+<<<<<<< HEAD
   });
+=======
+  })
+>>>>>>> b2056da (Feat: aic-54 token with test)
 
   describe("All access check tests.", () => {
     Object.entries(tokens).forEach(([roleName]) => {
       describe(`${roleName}`, () => {
         for (const [role, permissions] of Object.entries(rolesPermissions)) {
           describe(`Test with right of ${role}`, () => {
+<<<<<<< HEAD
             testByAllFunction(
               roleName,
               permissions,
@@ -93,6 +114,22 @@ function testByAllFunction(
       const res = await request(app)
         .post("/access/check")
         .send({ token, rightName });
+=======
+            testByAllFunction(roleName, permissions, (roleName != role) && (role != "everyone"));
+          });
+        };
+      });
+    });
+  });
+})
+
+
+function testByAllFunction(roleName: String, rights: String[], shouldFail: boolean) {
+  for (const rightName of rights) {
+    it(`${rightName}`, async () => {
+      const token = tokens[roleName.toString()];
+      const res = await request(app).post("/access/check").send({ token, rightName });
+>>>>>>> b2056da (Feat: aic-54 token with test)
       if (shouldFail) {
         expect(res.statusCode).toEqual(403);
         expect(res.body).toHaveProperty("message", "Access denied");
@@ -102,4 +139,8 @@ function testByAllFunction(
       expect(res.body).toHaveProperty("message", "Access granted");
     });
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> b2056da (Feat: aic-54 token with test)
