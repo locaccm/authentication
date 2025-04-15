@@ -33,9 +33,11 @@ describe("access check", () => {
 
     for (const user of users) {
       const signupRes = await request(app).post("/auth/signup").send(user);
+      expect(signupRes.body).toHaveProperty("message", "User created successfully");
       expect(signupRes.status).toBe(201);
 
       const signinRes = await request(app).post("/auth/signin").send(user);
+      expect(signinRes.body).toHaveProperty("message", "User connected successfully");
       expect(signinRes.status).toBe(200);
 
       const userType = user.getType();
