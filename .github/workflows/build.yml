@@ -35,16 +35,17 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npx prisma migrate deploy && npx prisma generate
 
-      - name: Run tests with coverage
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: npm run test -- --coverage --coverageReporters=lcov
-
       - name: Set JWT SECRET
         run: echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
 
       - name: Verify JWT SECRET
         run: echo "JWT_SECRET is set to $JWT_SECRET"
+
+      - name: Run tests with coverage
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: npm run test -- --coverage --coverageReporters=lcov
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
