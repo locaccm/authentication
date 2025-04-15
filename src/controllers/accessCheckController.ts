@@ -1,19 +1,26 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import { rolesPermissions } from "../config/rolesPermissions";
 
 
 export const checkAccess= async (req: Request, res: Response): Promise<void> => {
   try {
-    // TODO
-    const { access } = req.body;
-    if (!access) {
-      throw new Error("Access level is required");
-      return;
+    const { token, rightName } = req.body;
+
+    if (!token) {
+      throw new Error("Token is missing");
     }
-    if (access !== "admin") {
-      throw new Error("Access denied");
-      return;
+    if (!rightName) {
+      throw new Error("Right name is missing");
     }
-    res.status(200).json({ message: "Access granted" });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string; status: string };
+    const accessApprouved = (rolesPermissions[decoded.status].includes(rightName) || rolesPermissions.everyone.includes(rightName));
+
+    if(accessApprouved) {
+      res.status(200).json({ message: "Access granted" });
+    } else {
+      res.status(403).json({ message: "Access denied" });
+    }
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error(error);

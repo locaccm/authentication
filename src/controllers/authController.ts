@@ -10,7 +10,7 @@ const tokenDuration = 1000 * 60 * 60;
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { USEC_MAIL, USEC_PASSWORD, USEC_FNAME, USEC_LNAME, USED_BIRTH } =
+    const { USEC_MAIL, USEC_PASSWORD, USEC_FNAME, USEC_LNAME, USED_BIRTH, USEC_TYPE } =
       req.body;
     const user = new User(
       USEC_MAIL,
@@ -18,6 +18,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       USEC_FNAME,
       USEC_LNAME,
       USED_BIRTH,
+      USEC_TYPE
     );
     if (!user.hasAllAttributesForRegister()) {
       throw new Error("missing registration information");
