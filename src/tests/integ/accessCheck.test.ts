@@ -4,26 +4,12 @@ import app from "../../index";
 import { string } from "zod";
 import { rolesPermissions } from "../../config/rolesPermissions";
 
-<<<<<<< HEAD
-
 const tokens: { [key: string]: String } = {
   owner: "",
   tenant: "",
 };
 
 describe("access check", () => {
-=======
-//beforeAll(async () => await new Promise(resolve => setTimeout(resolve, 5000)));
-const tokens: { [key: string]: String } = {
-  owner: "",
-  tenant: "",
-};
-describe("access check", () => {
-<<<<<<< HEAD
-
->>>>>>> b2056da (Feat: aic-54 token with test)
-=======
->>>>>>> 4e51096 (chore: prettier)
   beforeAll(async () => {
     const now = new Date();
     const users = [
@@ -48,16 +34,22 @@ describe("access check", () => {
     for (const user of users) {
       const signupRes = await request(app).post("/auth/signup").send(user);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1a316d3 (fix: verification signin and signup)
       expect(signupRes.body).toHaveProperty("message", "User created successfully");
       expect(signupRes.status).toBe(201);
 
       const signinRes = await request(app).post("/auth/signin").send(user);
       expect(signinRes.body).toHaveProperty("message", "User connected successfully");
+<<<<<<< HEAD
 =======
       expect(signupRes.status).toBe(201);
 
       const signinRes = await request(app).post("/auth/signin").send(user);
 >>>>>>> b2056da (Feat: aic-54 token with test)
+=======
+>>>>>>> 1a316d3 (fix: verification signin and signup)
       expect(signinRes.status).toBe(200);
 
       const userType = user.getType();
