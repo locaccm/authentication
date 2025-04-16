@@ -36,6 +36,10 @@ class User {
     return this;
   }
 
+  public setStatus(status: string) {
+    this.USEC_TYPE = status;
+  }
+
   public removePassword() {
     this.USEC_PASSWORD = undefined;
   }

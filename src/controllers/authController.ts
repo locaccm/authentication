@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { connectUser, registerUser } from "../services/authService";
+import { connectUser, emailUserExists, registerUser } from "../services/authService";
 import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
-import { emailAlreadyExist } from "../middlewares/emailAlreadyExist";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import error from "eslint-plugin-react/lib/util/error";
 
 const tokenDuration = 1000 * 60 * 60;
 
@@ -24,7 +24,9 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       throw new Error("missing registration information");
     }
     validatePassword(user.getPassword()!, res);
-    await emailAlreadyExist(user.getMail(), res);
+    if(await emailUserExists(user.getMail())){
+      throw new Error("Email already exists");
+    }
     const userInDb = await registerUser(user);
     userInDb.removePassword();
 
@@ -85,3 +87,39 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     }
   }
 };
+
+export const inviteTenant = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { USEC_MAIL } =
+      req.body;
+    if (!USEC_MAIL) {
+      throw new Error("missing registration information");
+    }
+    const user = new User(
+      USEC_MAIL,
+    );
+    user.setStatus("TENANT");
+
+    validatePassword(user.getPassword()!, res);
+    if(await emailUserExists(user.getMail())){
+      throw new Error("Email already exists");
+    }
+    const userInDb = await registerUser(user);
+    userInDb.removePassword();
+
+    res.status(201).json({
+      message: "Tenant invite successfully",
+      user: userInDb,
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(error);
+      res
+        .status(400)
+        .json({ error: "Error during registration :" + error.message });
+      return;
+    } else {
+      console.error("Unknown error", error);
+    }
+  }
+}
