@@ -73,21 +73,6 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       throw new Error("Invalid password");
     }
 
-<<<<<<< HEAD
-    const token = jwt.sign(
-      { userId: userInBdd.getId(), status: userInBdd.getType()! },
-      process.env.JWT_SECRET!,
-      {
-        expiresIn: tokenDuration,
-      },
-    );
-
-    res.status(200).json({
-      message: "User connected successfully",
-      user: userInBdd,
-      token: token,
-    });
-=======
     const token = jwt.sign({userId: userInDb.getId(), status: userInDb.getType()!}, process.env.JWT_SECRET!, {
       expiresIn: tokenDuration,
     })
@@ -95,7 +80,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     res
       .status(200)
       .json({ message: "User connected successfully", user: userInDb, token: token });
->>>>>>> 5bc4c16 (fix: review)
+
   } catch (error: unknown) {
     if (error instanceof Error) {
       res
