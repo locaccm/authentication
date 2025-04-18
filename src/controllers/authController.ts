@@ -61,20 +61,21 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     if (!user.hasAllAttributesForConnection()) {
       throw new Error("missing information");
     }
-    let userInBdd = await connectUser(user);
+    let userInDb = await connectUser(user);
 
-    if (userInBdd === null) {
+    if (userInDb === null) {
       throw new Error("Unkown user");
     }
 
     const isPasswordValid = await bcrypt.compare(
       user.getPassword()!,
-      userInBdd.getPassword()!,
+      userInDb.getPassword()!,
     );
     if (!isPasswordValid) {
       throw new Error("Invalid password");
     }
 
+<<<<<<< HEAD
     const token = jwt.sign(
       { userId: userInBdd.getId(), status: userInBdd.getType()! },
       process.env.JWT_SECRET!,
@@ -88,6 +89,15 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       user: userInBdd,
       token: token,
     });
+=======
+    const token = jwt.sign({userId: userInDb.getId(), status: userInDb.getType()!}, process.env.JWT_SECRET!, {
+      expiresIn: tokenDuration,
+    })
+
+    res
+      .status(200)
+      .json({ message: "User connected successfully", user: userInDb, token: token });
+>>>>>>> 5bc4c16 (fix: review)
   } catch (error: unknown) {
     if (error instanceof Error) {
       res
