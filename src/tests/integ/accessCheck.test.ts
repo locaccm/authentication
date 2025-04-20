@@ -4,11 +4,6 @@ import app from "../../index";
 import { string } from "zod";
 import { rolesPermissions } from "../../config/rolesPermissions";
 
-//beforeAll(async () => await new Promise(resolve => setTimeout(resolve, 5000)));
-const tokens: { [key: string]: String } = {
-  owner: "",
-  tenant: "",
-};
 describe("access check", () => {
   beforeAll(async () => {
     const now = new Date();
