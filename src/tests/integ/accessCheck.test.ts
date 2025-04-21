@@ -4,6 +4,12 @@ import app from "../../index";
 import { string } from "zod";
 import { rolesPermissions } from "../../config/rolesPermissions";
 
+
+const tokens: { [key: string]: String } = {
+  owner: "",
+  tenant: "",
+};
+
 describe("access check", () => {
   beforeAll(async () => {
     const now = new Date();
