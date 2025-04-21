@@ -33,7 +33,7 @@ jobs:
       - name: Apply database migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: npm run generate:schema && npx prisma migrate deploy && npx prisma generate
+        run: npx prisma migrate deploy && npx prisma generate
 
       - name: Set JWT SECRET
         run: echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
