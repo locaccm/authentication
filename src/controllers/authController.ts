@@ -4,17 +4,27 @@ import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import { emailAlreadyExist } from "../middlewares/emailAlreadyExist";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+const tokenDuration = 1000 * 60 * 60;
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { USEC_MAIL, USEC_PASSWORD, USEC_FNAME, USEC_LNAME, USED_BIRTH } =
-      req.body;
+    const {
+      USEC_MAIL,
+      USEC_PASSWORD,
+      USEC_FNAME,
+      USEC_LNAME,
+      USED_BIRTH,
+      USEC_TYPE,
+    } = req.body;
     const user = new User(
       USEC_MAIL,
       USEC_PASSWORD,
       USEC_FNAME,
       USEC_LNAME,
       USED_BIRTH,
+      USEC_TYPE,
     );
     if (!user.hasAllAttributesForRegister()) {
       throw new Error("missing registration information");
@@ -49,23 +59,28 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     if (!user.hasAllAttributesForConnection()) {
       throw new Error("missing information");
     }
-    let userInBdd = await connectUser(user);
+    let userInDb = await connectUser(user);
 
-    if (userInBdd === null) {
+    if (userInDb === null) {
       throw new Error("Unkown user");
     }
 
     const isPasswordValid = await bcrypt.compare(
       user.getPassword()!,
-      userInBdd.getPassword()!,
+      userInDb.getPassword()!,
     );
     if (!isPasswordValid) {
       throw new Error("Invalid password");
     }
 
+    const token = jwt.sign({userId: userInDb.getId(), status: userInDb.getType()!}, process.env.JWT_SECRET!, {
+      expiresIn: tokenDuration,
+    })
+
     res
       .status(200)
-      .json({ message: "User connected successfully", user: userInBdd });
+      .json({ message: "User connected successfully", user: userInDb, token: token });
+
   } catch (error: unknown) {
     if (error instanceof Error) {
       res

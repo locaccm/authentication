@@ -50,6 +50,13 @@ class User {
     this.USEC_PASSWORD = password;
     return this;
   }
+  public getId() {
+    return this.USEN_ID;
+  }
+
+  getType() {
+    return this.USEC_TYPE;
+  }
 }
 
 export default User;
