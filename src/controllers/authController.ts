@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-require('dotenv').config();
+require("dotenv").config();
 import { connectUser, registerUser } from "../services/authService";
 import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
@@ -32,8 +32,8 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     validatePassword(user.getPassword()!, res);
 
     let userInDb = await connectUser(user);
-    if(userInDb){
-      if(userInDb.getType() === "OWNER"){
+    if (userInDb) {
+      if (userInDb.getType() === "OWNER") {
         throw new Error("Email already exists");
       }
     }
@@ -79,13 +79,19 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       throw new Error("Invalid password");
     }
 
-    const token = jwt.sign({userId: userInDb.getId(), status: userInDb.getType()!}, process.env.JWT_SECRET!, {
-      expiresIn: tokenDuration,
-    })
+    const token = jwt.sign(
+      { userId: userInDb.getId(), status: userInDb.getType()! },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: tokenDuration,
+      },
+    );
 
-    res
-      .status(200)
-      .json({ message: "User connected successfully", user: userInDb, token: token });
+    res.status(200).json({
+      message: "User connected successfully",
+      user: userInDb,
+      token: token,
+    });
   } catch (error: unknown) {
     if (error instanceof Error) {
       res
@@ -98,25 +104,26 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const inviteTenant = async (req: Request, res: Response): Promise<void> => {
+export const inviteTenant = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   try {
-    const { USEC_MAIL } =
-      req.body;
+    const { USEC_MAIL } = req.body;
     if (!USEC_MAIL) {
       throw new Error("missing registration information");
     }
-    const user = new User(
-      USEC_MAIL,
-    );
+    const user = new User(USEC_MAIL);
     user.setStatus("TENANT");
 
-    if(await connectUser(user)){
+    if (await connectUser(user)) {
       throw new Error("Email already exists");
     }
-    const mailIsSended = await fetch(process.env.MAIL_INVITE_TENANT!
-    // TODO: waiting for email service's information
+    const mailIsSended = await fetch(
+      process.env.MAIL_INVITE_TENANT!,
+      // TODO: waiting for email service's information
     );
-    if(!mailIsSended.ok){
+    if (!mailIsSended.ok) {
       throw new Error("Mail not sended");
     }
     const userInDb = await registerUser(user);
@@ -137,4 +144,4 @@ export const inviteTenant = async (req: Request, res: Response): Promise<void> =
       console.error("Unknown error", error);
     }
   }
-}
+};

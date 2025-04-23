@@ -33,11 +33,17 @@ describe("access check", () => {
 
     for (const user of users) {
       const signupRes = await request(app).post("/auth/signup").send(user);
-      expect(signupRes.body).toHaveProperty("message", "User created successfully");
+      expect(signupRes.body).toHaveProperty(
+        "message",
+        "User created successfully",
+      );
       expect(signupRes.status).toBe(201);
 
       const signinRes = await request(app).post("/auth/signin").send(user);
-      expect(signinRes.body).toHaveProperty("message", "User connected successfully");
+      expect(signinRes.body).toHaveProperty(
+        "message",
+        "User connected successfully",
+      );
       expect(signupRes.status).toBe(201);
 
       const userType = user.getType();
@@ -65,19 +71,24 @@ describe("access check", () => {
     });
   });
 
-
   it("Should reject a request without token", async () => {
     const res = await request(app).post("/access/check").send({
       rightName: "access",
     });
-    expect(res.body).toHaveProperty("error", "Error during access check :Token is missing");
+    expect(res.body).toHaveProperty(
+      "error",
+      "Error during access check :Token is missing",
+    );
     expect(res.statusCode).toEqual(401);
   });
   it("Should reject a request without rightName", async () => {
     const res = await request(app).post("/access/check").send({
       token: tokens["owner"],
     });
-    expect(res.body).toHaveProperty("error", "Error during access check :Right name is missing");
+    expect(res.body).toHaveProperty(
+      "error",
+      "Error during access check :Right name is missing",
+    );
     expect(res.statusCode).toEqual(401);
   });
 });
@@ -90,7 +101,9 @@ function testByAllFunction(
   for (const rightName of rights) {
     it(`${rightName}`, async () => {
       const token = tokens[roleName.toString()];
-      const res = await request(app).post("/access/check").send({ token, rightName });
+      const res = await request(app)
+        .post("/access/check")
+        .send({ token, rightName });
       if (shouldFail) {
         expect(res.statusCode).toEqual(403);
         expect(res.body).toHaveProperty("message", "Access denied");

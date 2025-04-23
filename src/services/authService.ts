@@ -30,4 +30,3 @@ export const connectUser = async (user: User) => {
   }
   return new User(user.getMail()).mapDbUserToModel(userDb);
 };
-
