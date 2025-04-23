@@ -29,7 +29,7 @@ class User {
     this.USEC_LNAME = userDb.USEC_LNAME ?? undefined;
     this.USEC_FNAME = userDb.USEC_FNAME ?? undefined;
     this.USEC_PASSWORD = userDb.USEC_PASSWORD ?? undefined;
-    this.USEC_TYPE = userDb.USEC_TYPE ?? "owner";
+    this.USEC_TYPE = userDb.USEC_TYPE ?? "OWNER";
     this.USEN_ID = userDb.USEN_ID ?? undefined;
     this.USED_BIRTH = userDb.USED_BIRTH ?? undefined;
 
