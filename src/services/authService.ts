@@ -31,10 +31,3 @@ export const connectUser = async (user: User) => {
   return new User(user.getMail()).mapDbUserToModel(userDb);
 };
 
-export const emailUserExists = async (email: string) => {
-  return !!(await prisma.user.findFirst({
-    where: {
-      USEC_MAIL: email,
-    },
-  }));
-};

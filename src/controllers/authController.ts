@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
-import { connectUser, emailUserExists, registerUser } from "../services/authService";
+require('dotenv').config();
+import { connectUser, registerUser } from "../services/authService";
 import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import error from "eslint-plugin-react/lib/util/error";
-import * as https from "node:https";
 
 const tokenDuration = 1000 * 60 * 60;
 
@@ -31,10 +30,14 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       throw new Error("missing registration information");
     }
     validatePassword(user.getPassword()!, res);
-    if(await emailUserExists(user.getMail())){
-      throw new Error("Email already exists");
+
+    let userInDb = await connectUser(user);
+    if(userInDb){
+      if(userInDb.getType() === "OWNER"){
+        throw new Error("Email already exists");
+      }
     }
-    const userInDb = await registerUser(user);
+    userInDb = await registerUser(user);
     userInDb.removePassword();
 
     res.status(201).json({
@@ -107,10 +110,15 @@ export const inviteTenant = async (req: Request, res: Response): Promise<void> =
     );
     user.setStatus("TENANT");
 
-    if(await emailUserExists(user.getMail())){
+    if(await connectUser(user)){
       throw new Error("Email already exists");
     }
-    const mailIsSended = await fetch('https://api.example.com/data');
+    const mailIsSended = await fetch(process.env.MAIL_INVITE_TENANT!
+    // TODO: waiting for email service's information
+    );
+    if(!mailIsSended.ok){
+      throw new Error("Mail not sended");
+    }
     const userInDb = await registerUser(user);
     userInDb.removePassword();
 
