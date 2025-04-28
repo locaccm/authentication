@@ -111,7 +111,7 @@ export const inviteTenant = async (
 ): Promise<void> => {
   try {
     const { OWNER_NAME,USEC_MAIL, ADRESSE } = req.body;
-
+    console.log(OWNER_NAME,USEC_MAIL, ADRESSE)
     if (!OWNER_NAME||!USEC_MAIL|| !ADRESSE) {
       throw new Error("missing invitation information");
     }

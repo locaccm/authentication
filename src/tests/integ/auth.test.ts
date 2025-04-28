@@ -159,26 +159,57 @@ describe("Authentication all route tests.", () => {
   });
 
   describe("InviteTenant", () => {
-    it("Should invite a tenant", async () => {
-      global.fetch = jest.fn(() =>
-        Promise.resolve({
-          ok: true,
-        }),
-      ) as jest.Mock;
+    const testCases = [
+      {
+        name: "Should invite a tenant successfully",
+        mockFetch: () =>
+          Promise.resolve({
+            ok: true,
+          }),
+        requestBody: {
+          OWNER_NAME: "pedro",
+          USEC_MAIL: "testInvite" + Math.floor(Math.random() * 1000000) + "@test.fr",
+          ADRESSE: "20 rue de la paix",
+        },
+        expectedStatus: 201,
+        expectedMessage: "Tenant invite successfully",
+      },
+      {
+        name: "Should fail to invite tenant",
+        mockFetch: () =>
+          Promise.resolve({
+            ok: false,
+            status: 400,
+            json: async () => ({ message: "Failed to invite tenant" }),
+          }),
+        requestBody: {
+          OWNER_NAME: "pedro",
+          USEC_MAIL: "testInvite" + Math.floor(Math.random() * 1000000) + "@test.fr",
+          ADRESSE: "20 rue de la paix",
+        },
+        expectedStatus: 400,
+        expectedMessage: "Error during registration :Mail not sended",
+      },
+    ];
 
-      const res = await request(app).post("/auth/invitetenant").send({
-        OWNER_NAME: "pedro" ,
-        USEC_MAIL: "testInvite" + Math.floor(Math.random() * 1000000) +"@test.fr",
-        ADRESSE: "20 rue de la paix",
+    testCases.forEach(({ name, mockFetch, requestBody, expectedStatus, expectedMessage }) => {
+      it(name, async () => {
+        global.fetch = jest.fn(mockFetch) as jest.Mock;
+
+        const res = await request(app).post("/auth/invitetenant").send(requestBody);
+
+        console.log(res.body);
+        if(expectedStatus === 201) {
+          expect(res.body).toHaveProperty("message", expectedMessage);
+
+        }else {
+          expect(res.body).toHaveProperty("error", expectedMessage);
+        }
+        expect(res.statusCode).toEqual(expectedStatus);
       });
-      console.log(res.body);
-      expect(res.statusCode).toEqual(201)
-      expect(res.body).toHaveProperty(
-        "message",
-        "Tenant invite successfully",
-      );
     });
-  })
+  });
+
 
 
 });
