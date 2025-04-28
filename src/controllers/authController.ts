@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 
-import { connectUser, emailUserExists, registerUser } from "../services/authService";
+import { connectUser, registerUser, registerInvitedTenant, updateUser } from "../services/authService";
 import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import emailInformation from "../config/emailInformation";
 
 const tokenDuration = 1000 * 60 * 60;
 
@@ -36,6 +37,9 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     if (userInDb) {
       if (userInDb.getType() === "OWNER") {
         throw new Error("Email already exists");
+      } else if (userInDb.getType() === "TENANT") {
+        userInDb.setStatus("TENANT");
+        updateUser(userInDb);
       }
     }
     userInDb = await registerUser(user);
@@ -106,9 +110,10 @@ export const inviteTenant = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { USEC_MAIL } = req.body;
-    if (!USEC_MAIL) {
-      throw new Error("missing registration information");
+    const { OWNER_NAME,USEC_MAIL, ADRESSE } = req.body;
+
+    if (!OWNER_NAME||!USEC_MAIL|| !ADRESSE) {
+      throw new Error("missing invitation information");
     }
     const user = new User(USEC_MAIL);
     user.setStatus("TENANT");
@@ -118,12 +123,18 @@ export const inviteTenant = async (
     }
     const mailIsSended = await fetch(
       process.env.MAIL_INVITE_TENANT!,
-      // TODO: waiting for email service's information
+      { method: "GET",
+      body: JSON.stringify({
+        email: USEC_MAIL,
+        emailContent : emailInformation(OWNER_NAME,USEC_MAIL, ADRESSE)
+      }),
+        }
+
     );
     if (!mailIsSended.ok) {
       throw new Error("Mail not sended");
     }
-    const userInDb = await registerUser(user);
+    const userInDb = await registerInvitedTenant(user);
     userInDb.removePassword();
 
     res.status(201).json({

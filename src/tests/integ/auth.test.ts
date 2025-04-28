@@ -157,4 +157,28 @@ describe("Authentication all route tests.", () => {
       });
     }
   });
+
+  describe("InviteTenant", () => {
+    it("Should invite a tenant", async () => {
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: true,
+        }),
+      ) as jest.Mock;
+
+      const res = await request(app).post("/auth/invitetenant").send({
+        OWNER_NAME: "pedro" ,
+        USEC_MAIL: "testInvite" + Math.floor(Math.random() * 1000000) +"@test.fr",
+        ADRESSE: "20 rue de la paix",
+      });
+      console.log(res.body);
+      expect(res.statusCode).toEqual(201)
+      expect(res.body).toHaveProperty(
+        "message",
+        "Tenant invite successfully",
+      );
+    });
+  })
+
+
 });

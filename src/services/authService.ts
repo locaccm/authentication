@@ -19,6 +19,17 @@ export const registerUser = async (user: User) => {
   return new User(user.getMail()).mapDbUserToModel(userInDb);
 };
 
+export const registerInvitedTenant = async (user: User) => {
+
+  const userInDb = await prisma.user.create({
+    data: {
+      ...user,
+    },
+  });
+
+  return new User(user.getMail()).mapDbUserToModel(userInDb);
+}
+
 export const connectUser = async (user: User) => {
   const userDb = await prisma.user.findFirst({
     where: {
@@ -31,10 +42,19 @@ export const connectUser = async (user: User) => {
   return new User(user.getMail()).mapDbUserToModel(userDb);
 };
 
-export const emailUserExists = async (email: string) => {
-  return !!(await prisma.user.findFirst({
-    where: {
-      USEC_MAIL: email,
+export const updateUser = async (user: User) => {
+  const userDb = await prisma.user.update(
+    {
+      where: {
+        USEN_ID: user.getId(),
+      },
+      data: {
+        ...user,
+      },
     },
-  }));
-};
+  )
+  if (!userDb) {
+    return null;
+  }
+  return new User(user.getMail()).mapDbUserToModel(userDb);
+}
