@@ -4,8 +4,7 @@ import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import error from "eslint-plugin-react/lib/util/error";
-import * as https from "node:https";
+require('dotenv').config();
 
 const tokenDuration = 1000 * 60 * 60;
 
@@ -111,7 +110,10 @@ export const inviteTenant = async (req: Request, res: Response): Promise<void> =
     if(await emailUserExists(user.getMail())){
       throw new Error("Email already exists");
     }
-    const mailIsSended = await fetch('https://api.example.com/data');
+    const mailIsSended = await fetch(process.env.MAIL_URL!);
+    if(!mailIsSended.ok){
+      throw new Error("Error during mail sending");
+    }
     const userInDb = await registerUser(user);
     userInDb.removePassword();
 
