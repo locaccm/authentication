@@ -29,11 +29,7 @@ class User {
     this.USEC_LNAME = userDb.USEC_LNAME ?? undefined;
     this.USEC_FNAME = userDb.USEC_FNAME ?? undefined;
     this.USEC_PASSWORD = userDb.USEC_PASSWORD ?? undefined;
-<<<<<<< HEAD
-    this.USEC_TYPE = userDb.USEC_TYPE ?? "owner";
-=======
     this.USEC_TYPE = userDb.USEC_TYPE ?? "OWNER";
->>>>>>> 754525f125c050157f630ecf5e7d74918a9ae82d
     this.USEN_ID = userDb.USEN_ID ?? undefined;
     this.USED_BIRTH = userDb.USED_BIRTH ?? undefined;
 
@@ -61,12 +57,7 @@ class User {
   public getId() {
     return this.USEN_ID;
   }
-<<<<<<< HEAD
-
-  getType() {
-=======
   public getType() {
->>>>>>> 754525f125c050157f630ecf5e7d74918a9ae82d
     return this.USEC_TYPE;
   }
 }

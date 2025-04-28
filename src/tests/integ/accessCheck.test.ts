@@ -4,18 +4,10 @@ import app from "../../index";
 import { string } from "zod";
 import { rolesPermissions } from "../../config/rolesPermissions";
 
-<<<<<<< HEAD
-//beforeAll(async () => await new Promise(resolve => setTimeout(resolve, 5000)));
-=======
->>>>>>> 754525f125c050157f630ecf5e7d74918a9ae82d
 const tokens: { [key: string]: String } = {
   owner: "",
   tenant: "",
 };
-<<<<<<< HEAD
-=======
-
->>>>>>> 754525f125c050157f630ecf5e7d74918a9ae82d
 describe("access check", () => {
   beforeAll(async () => {
     const now = new Date();
@@ -40,27 +32,13 @@ describe("access check", () => {
 
     for (const user of users) {
       const signupRes = await request(app).post("/auth/signup").send(user);
-<<<<<<< HEAD
       expect(signupRes.body).toHaveProperty("message", "User created successfully");
       expect(signupRes.status).toBe(201);
 
       const signinRes = await request(app).post("/auth/signin").send(user);
       expect(signinRes.body).toHaveProperty("message", "User connected successfully");
       expect(signinRes.status).toBe(200);
-=======
-      expect(signupRes.body).toHaveProperty(
-        "message",
-        "User created successfully",
-      );
-      expect(signupRes.status).toBe(201);
 
-      const signinRes = await request(app).post("/auth/signin").send(user);
-      expect(signinRes.body).toHaveProperty(
-        "message",
-        "User connected successfully",
-      );
-      expect(signupRes.status).toBe(201);
->>>>>>> 754525f125c050157f630ecf5e7d74918a9ae82d
 
       const userType = user.getType();
       if (userType) {
@@ -91,28 +69,21 @@ describe("access check", () => {
     const res = await request(app).post("/access/check").send({
       rightName: "access",
     });
-<<<<<<< HEAD
-    expect(res.body).toHaveProperty("error", "Error during access check :Token is missing");
-=======
     expect(res.body).toHaveProperty(
       "error",
       "Error during access check :Token is missing",
     );
->>>>>>> 754525f125c050157f630ecf5e7d74918a9ae82d
     expect(res.statusCode).toEqual(401);
   });
   it("Should reject a request without rightName", async () => {
     const res = await request(app).post("/access/check").send({
       token: tokens["owner"],
     });
-<<<<<<< HEAD
-    expect(res.body).toHaveProperty("error", "Error during access check :Right name is missing");
-=======
+
     expect(res.body).toHaveProperty(
       "error",
       "Error during access check :Right name is missing",
     );
->>>>>>> 754525f125c050157f630ecf5e7d74918a9ae82d
     expect(res.statusCode).toEqual(401);
   });
 });
