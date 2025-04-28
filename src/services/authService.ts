@@ -29,6 +29,7 @@ export const connectUser = async (user: User) => {
     return null;
   }
   return new User(user.getMail()).mapDbUserToModel(userDb);
+<<<<<<< HEAD
 };
 
 export const emailUserExists = async (email: string) => {
@@ -37,4 +38,6 @@ export const emailUserExists = async (email: string) => {
       USEC_MAIL: email,
     },
   }));
+=======
+>>>>>>> 754525f125c050157f630ecf5e7d74918a9ae82d
 };

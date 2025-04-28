@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
+
 import { connectUser, emailUserExists, registerUser } from "../services/authService";
 import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-require('dotenv').config();
 
 const tokenDuration = 1000 * 60 * 60;
 
@@ -28,12 +28,17 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     );
     if (!user.hasAllAttributesForRegister()) {
       throw new Error("missing registration information");
+
     }
     validatePassword(user.getPassword()!, res);
-    if(await emailUserExists(user.getMail())){
-      throw new Error("Email already exists");
+
+    let userInDb = await connectUser(user);
+    if (userInDb) {
+      if (userInDb.getType() === "OWNER") {
+        throw new Error("Email already exists");
+      }
     }
-    const userInDb = await registerUser(user);
+    userInDb = await registerUser(user);
     userInDb.removePassword();
 
     res.status(201).json({
@@ -95,24 +100,28 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const inviteTenant = async (req: Request, res: Response): Promise<void> => {
+
+export const inviteTenant = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   try {
-    const { USEC_MAIL } =
-      req.body;
+    const { USEC_MAIL } = req.body;
     if (!USEC_MAIL) {
       throw new Error("missing registration information");
     }
-    const user = new User(
-      USEC_MAIL,
-    );
+    const user = new User(USEC_MAIL);
     user.setStatus("TENANT");
 
-    if(await emailUserExists(user.getMail())){
+    if (await connectUser(user)) {
       throw new Error("Email already exists");
     }
-    const mailIsSended = await fetch(process.env.MAIL_URL!);
-    if(!mailIsSended.ok){
-      throw new Error("Error during mail sending");
+    const mailIsSended = await fetch(
+      process.env.MAIL_INVITE_TENANT!,
+      // TODO: waiting for email service's information
+    );
+    if (!mailIsSended.ok) {
+      throw new Error("Mail not sended");
     }
     const userInDb = await registerUser(user);
     userInDb.removePassword();
@@ -132,4 +141,4 @@ export const inviteTenant = async (req: Request, res: Response): Promise<void> =
       console.error("Unknown error", error);
     }
   }
-}
+};
