@@ -40,6 +40,11 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       } else if (userInDb.getType() === "TENANT") {
         userInDb.setStatus("TENANT");
         updateUser(userInDb);
+        res.status(201).json({
+          message: "Tenant created successfully",
+          user: userInDb,
+        });
+        return;
       }
     }
     userInDb = await registerUser(user);
@@ -111,7 +116,6 @@ export const inviteTenant = async (
 ): Promise<void> => {
   try {
     const { OWNER_NAME,USEC_MAIL, ADRESSE } = req.body;
-    console.log(OWNER_NAME,USEC_MAIL, ADRESSE)
     if (!OWNER_NAME||!USEC_MAIL|| !ADRESSE) {
       throw new Error("missing invitation information");
     }

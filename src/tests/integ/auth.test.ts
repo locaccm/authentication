@@ -198,7 +198,6 @@ describe("Authentication all route tests.", () => {
 
         const res = await request(app).post("/auth/invitetenant").send(requestBody);
 
-        console.log(res.body);
         if(expectedStatus === 201) {
           expect(res.body).toHaveProperty("message", expectedMessage);
 
@@ -208,6 +207,18 @@ describe("Authentication all route tests.", () => {
         expect(res.statusCode).toEqual(expectedStatus);
       });
     });
+    it("Sign up a tenant who was invited and it's work", async () => {
+      const res = await request(app).post("/auth/signup").send({
+        USEC_MAIL: testCases[0].requestBody.USEC_MAIL,
+        USEC_PASSWORD: "ValidPass1!",
+        USEC_LNAME: "pedro",
+        USEC_FNAME: "toto",
+        USED_BIRTH: now,
+      });
+      expect(res.statusCode).toEqual(201);
+      expect(res.body).toHaveProperty("message", "Tenant created successfully");
+
+    })
   });
 
 
