@@ -1,9 +1,9 @@
 require("dotenv").config();
 
 const emailInformation = (
-  ownerName: String,
-  locataireEmail: String,
-  adresse: String,
+  ownerName: string,
+  locataireEmail: string,
+  adresse: string,
 ): string => {
   return `Bonjour,
 
