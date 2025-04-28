@@ -168,7 +168,8 @@ describe("Authentication all route tests.", () => {
           }),
         requestBody: {
           OWNER_NAME: "pedro",
-          USEC_MAIL: "testInvite" + Math.floor(Math.random() * 1000000) + "@test.fr",
+          USEC_MAIL:
+            "testInvite" + Math.floor(Math.random() * 1000000) + "@test.fr",
           ADRESSE: "20 rue de la paix",
         },
         expectedStatus: 201,
@@ -184,7 +185,8 @@ describe("Authentication all route tests.", () => {
           }),
         requestBody: {
           OWNER_NAME: "pedro",
-          USEC_MAIL: "testInvite" + Math.floor(Math.random() * 1000000) + "@test.fr",
+          USEC_MAIL:
+            "testInvite" + Math.floor(Math.random() * 1000000) + "@test.fr",
           ADRESSE: "20 rue de la paix",
         },
         expectedStatus: 400,
@@ -192,21 +194,24 @@ describe("Authentication all route tests.", () => {
       },
     ];
 
-    testCases.forEach(({ name, mockFetch, requestBody, expectedStatus, expectedMessage }) => {
-      it(name, async () => {
-        global.fetch = jest.fn(mockFetch) as jest.Mock;
+    testCases.forEach(
+      ({ name, mockFetch, requestBody, expectedStatus, expectedMessage }) => {
+        it(name, async () => {
+          global.fetch = jest.fn(mockFetch) as jest.Mock;
 
-        const res = await request(app).post("/auth/invitetenant").send(requestBody);
+          const res = await request(app)
+            .post("/auth/invitetenant")
+            .send(requestBody);
 
-        if(expectedStatus === 201) {
-          expect(res.body).toHaveProperty("message", expectedMessage);
-
-        }else {
-          expect(res.body).toHaveProperty("error", expectedMessage);
-        }
-        expect(res.statusCode).toEqual(expectedStatus);
-      });
-    });
+          if (expectedStatus === 201) {
+            expect(res.body).toHaveProperty("message", expectedMessage);
+          } else {
+            expect(res.body).toHaveProperty("error", expectedMessage);
+          }
+          expect(res.statusCode).toEqual(expectedStatus);
+        });
+      },
+    );
     it("Sign up a tenant who was invited and it's work", async () => {
       const res = await request(app).post("/auth/signup").send({
         USEC_MAIL: testCases[0].requestBody.USEC_MAIL,
@@ -217,10 +222,6 @@ describe("Authentication all route tests.", () => {
       });
       expect(res.statusCode).toEqual(201);
       expect(res.body).toHaveProperty("message", "Tenant created successfully");
-
-    })
+    });
   });
-
-
-
 });

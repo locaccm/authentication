@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 
-import { connectUser, registerUser, registerInvitedTenant, updateUser } from "../services/authService";
+import {
+  connectUser,
+  registerUser,
+  registerInvitedTenant,
+  updateUser,
+} from "../services/authService";
 import { validatePassword } from "../middlewares/validatePassword";
 import User from "../models/user";
 import bcrypt from "bcryptjs";
@@ -29,7 +34,6 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     );
     if (!user.hasAllAttributesForRegister()) {
       throw new Error("missing registration information");
-
     }
     validatePassword(user.getPassword()!, res);
 
@@ -89,14 +93,21 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       throw new Error("Invalid password");
     }
 
-    const token = jwt.sign({userId: userInDb.getId(), status: userInDb.getType()!}, process.env.JWT_SECRET!, {
-      expiresIn: tokenDuration,
-    })
+    const token = jwt.sign(
+      { userId: userInDb.getId(), status: userInDb.getType()! },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: tokenDuration,
+      },
+    );
 
     res
       .status(200)
-      .json({ message: "User connected successfully", user: userInDb, token: token });
-
+      .json({
+        message: "User connected successfully",
+        user: userInDb,
+        token: token,
+      });
   } catch (error: unknown) {
     if (error instanceof Error) {
       res
@@ -109,14 +120,13 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-
 export const inviteTenant = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const { OWNER_NAME,USEC_MAIL, ADRESSE } = req.body;
-    if (!OWNER_NAME||!USEC_MAIL|| !ADRESSE) {
+    const { OWNER_NAME, USEC_MAIL, ADRESSE } = req.body;
+    if (!OWNER_NAME || !USEC_MAIL || !ADRESSE) {
       throw new Error("missing invitation information");
     }
     const user = new User(USEC_MAIL);
@@ -125,16 +135,13 @@ export const inviteTenant = async (
     if (await connectUser(user)) {
       throw new Error("Email already exists");
     }
-    const mailIsSended = await fetch(
-      process.env.MAIL_INVITE_TENANT!,
-      { method: "GET",
+    const mailIsSended = await fetch(process.env.MAIL_INVITE_TENANT!, {
+      method: "GET",
       body: JSON.stringify({
         email: USEC_MAIL,
-        emailContent : emailInformation(OWNER_NAME,USEC_MAIL, ADRESSE)
+        emailContent: emailInformation(OWNER_NAME, USEC_MAIL, ADRESSE),
       }),
-        }
-
-    );
+    });
     if (!mailIsSended.ok) {
       throw new Error("Mail not sended");
     }

@@ -1,6 +1,10 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const emailInformation = (ownerName: String, locataireEmail: String, adresse: String): string => {
+const emailInformation = (
+  ownerName: String,
+  locataireEmail: String,
+  adresse: String,
+): string => {
   return `Bonjour,
 
 ${ownerName} vous invite en tant que locataire à rejoindre le logement situé à l'adresse suivante : ${adresse}.

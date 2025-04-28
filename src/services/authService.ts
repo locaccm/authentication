@@ -20,7 +20,6 @@ export const registerUser = async (user: User) => {
 };
 
 export const registerInvitedTenant = async (user: User) => {
-
   const userInDb = await prisma.user.create({
     data: {
       ...user,
@@ -28,7 +27,7 @@ export const registerInvitedTenant = async (user: User) => {
   });
 
   return new User(user.getMail()).mapDbUserToModel(userInDb);
-}
+};
 
 export const connectUser = async (user: User) => {
   const userDb = await prisma.user.findFirst({
@@ -43,18 +42,16 @@ export const connectUser = async (user: User) => {
 };
 
 export const updateUser = async (user: User) => {
-  const userDb = await prisma.user.update(
-    {
-      where: {
-        USEN_ID: user.getId(),
-      },
-      data: {
-        ...user,
-      },
+  const userDb = await prisma.user.update({
+    where: {
+      USEN_ID: user.getId(),
     },
-  )
+    data: {
+      ...user,
+    },
+  });
   if (!userDb) {
     return null;
   }
   return new User(user.getMail()).mapDbUserToModel(userDb);
-}
+};
