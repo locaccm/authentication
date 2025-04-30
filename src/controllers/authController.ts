@@ -125,8 +125,8 @@ export const inviteTenant = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { OWNER_NAME, USEC_MAIL, ADRESSE } = req.body;
-    if (!OWNER_NAME || !USEC_MAIL || !ADRESSE) {
+    const { OWNER_NAME, USEC_MAIL, ADDRESS } = req.body;
+    if (!OWNER_NAME || !USEC_MAIL || !ADDRESS) {
       throw new Error("missing invitation information");
     }
     const user = new User(USEC_MAIL);
@@ -139,7 +139,7 @@ export const inviteTenant = async (
       method: "GET",
       body: JSON.stringify({
         email: USEC_MAIL,
-        emailContent: emailInformation(OWNER_NAME, USEC_MAIL, ADRESSE),
+        emailContent: emailInformation(OWNER_NAME, USEC_MAIL, ADDRESS),
       }),
     });
     if (!mailIsSended.ok) {

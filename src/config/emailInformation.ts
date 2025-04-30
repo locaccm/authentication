@@ -2,14 +2,14 @@ require("dotenv").config();
 
 const emailInformation = (
   ownerName: string,
-  locataireEmail: string,
-  adresse: string,
+  tenantEmail: string,
+  address: string,
 ): string => {
   return `Bonjour,
 
-${ownerName} vous invite en tant que locataire à rejoindre le logement situé à l'adresse suivante : ${adresse}.
+${ownerName} vous invite en tant que locataire à rejoindre le logement situé à l'adresse suivante : ${address}.
 
-Un email vous a été envoyé à l'adresse suivante : ${locataireEmail} pour finaliser l'invitation.
+Un email vous a été envoyé à l'adresse suivante : ${tenantEmail} pour finaliser l'invitation.
 
 Merci de vous inscrire à cette adresse : ${process.env.REGISTER_URL!}.
 
