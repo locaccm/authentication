@@ -170,7 +170,7 @@ describe("Authentication all route tests.", () => {
           OWNER_NAME: "pedro",
           USEC_MAIL:
             "testInvite" + Math.floor(Math.random() * 1000000) + "@test.fr",
-          ADRESSE: "20 rue de la paix",
+          ADDRESS: "20 rue de la paix",
         },
         expectedStatus: 201,
         expectedMessage: "Tenant invite successfully",
@@ -187,7 +187,7 @@ describe("Authentication all route tests.", () => {
           OWNER_NAME: "pedro",
           USEC_MAIL:
             "testInvite" + Math.floor(Math.random() * 1000000) + "@test.fr",
-          ADRESSE: "20 rue de la paix",
+          ADDRESS: "20 rue de la paix",
         },
         expectedStatus: 400,
         expectedMessage: "Error during registration :Mail not sended",
@@ -221,7 +221,7 @@ describe("Authentication all route tests.", () => {
         USED_BIRTH: now,
       });
       expect(res.statusCode).toEqual(201);
-      expect(res.body).toHaveProperty("message", "Tenant created successfully");
+      expect(res.body).toHaveProperty("message", "User created successfully");
     });
   });
 });

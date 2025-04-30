@@ -43,7 +43,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
         throw new Error("Email already exists");
       } else if (userInDb.getType() === "TENANT") {
         userInDb.setStatus("TENANT");
-        updateUser(userInDb);
+        await updateUser(userInDb);
         res.status(201).json({
           message: "Tenant created successfully",
           user: userInDb,
@@ -143,7 +143,7 @@ export const inviteTenant = async (
       }),
     });
     if (!mailIsSended.ok) {
-      throw new Error("Mail not sended");
+      throw new Error("Mail not sent");
     }
     const userInDb = await registerInvitedTenant(user);
     userInDb.removePassword();
