@@ -190,7 +190,7 @@ describe("Authentication all route tests.", () => {
           ADDRESS: "20 rue de la paix",
         },
         expectedStatus: 400,
-        expectedMessage: "Error during registration :Mail not sended",
+        expectedMessage: "Error during registration :Mail not sent",
       },
     ];
 
@@ -221,7 +221,7 @@ describe("Authentication all route tests.", () => {
         USED_BIRTH: now,
       });
       expect(res.statusCode).toEqual(201);
-      expect(res.body).toHaveProperty("message", "User created successfully");
+      expect(res.body).toHaveProperty("message", "Tenant created successfully");
     });
   });
 });
