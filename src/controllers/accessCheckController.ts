@@ -19,11 +19,11 @@ export const checkAccess = async (
       userId: string;
       status: string;
     };
-    const accessApprouved =
+    const accessApproved =
       rolesPermissions[decoded.status].includes(rightName) ||
       rolesPermissions.everyone.includes(rightName);
 
-    if (accessApprouved) {
+    if (accessApproved) {
       res.status(200).json({ message: "Access granted" });
     } else {
       res.status(403).json({ message: "Access denied" });
