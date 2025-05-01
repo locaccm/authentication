@@ -157,4 +157,71 @@ describe("Authentication all route tests.", () => {
       });
     }
   });
+
+  describe("InviteTenant", () => {
+    const testCases = [
+      {
+        name: "Should invite a tenant successfully",
+        mockFetch: () =>
+          Promise.resolve({
+            ok: true,
+          }),
+        requestBody: {
+          OWNER_NAME: "pedro",
+          USEC_MAIL:
+            "testInvite" + Math.floor(Math.random() * 1000000) + "@test.fr",
+          ADDRESS: "20 rue de la paix",
+        },
+        expectedStatus: 201,
+        expectedMessage: "Tenant invite successfully",
+      },
+      {
+        name: "Should fail to invite tenant",
+        mockFetch: () =>
+          Promise.resolve({
+            ok: false,
+            status: 400,
+            json: async () => ({ message: "Failed to invite tenant" }),
+          }),
+        requestBody: {
+          OWNER_NAME: "pedro",
+          USEC_MAIL:
+            "testInvite" + Math.floor(Math.random() * 1000000) + "@test.fr",
+          ADDRESS: "20 rue de la paix",
+        },
+        expectedStatus: 400,
+        expectedMessage: "Error during registration :Mail not sent",
+      },
+    ];
+
+    testCases.forEach(
+      ({ name, mockFetch, requestBody, expectedStatus, expectedMessage }) => {
+        it(name, async () => {
+          global.fetch = jest.fn(mockFetch) as jest.Mock;
+
+          const res = await request(app)
+            .post("/auth/invitetenant")
+            .send(requestBody);
+
+          if (expectedStatus === 201) {
+            expect(res.body).toHaveProperty("message", expectedMessage);
+          } else {
+            expect(res.body).toHaveProperty("error", expectedMessage);
+          }
+          expect(res.statusCode).toEqual(expectedStatus);
+        });
+      },
+    );
+    it("Sign up a tenant who was invited and it's work", async () => {
+      const res = await request(app).post("/auth/signup").send({
+        USEC_MAIL: testCases[0].requestBody.USEC_MAIL,
+        USEC_PASSWORD: "ValidPass1!",
+        USEC_LNAME: "pedro",
+        USEC_FNAME: "toto",
+        USED_BIRTH: now,
+      });
+      expect(res.statusCode).toEqual(201);
+      expect(res.body).toHaveProperty("message", "Tenant created successfully");
+    });
+  });
 });
