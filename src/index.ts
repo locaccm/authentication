@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/access", accessTokenRoute);
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.disable("x-powered-by");
 
 if (process.env.NODE_ENV !== "test") {

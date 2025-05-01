@@ -1,294 +1,296 @@
-import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerJsDoc from "swagger-jsdoc";
 
 const swaggerOptions = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'authentication API',
-      version: '1.0.0',
-      description: 'Documentation for the authentication API',
+      title: "authentication API",
+      version: "1.0.0",
+      description: "Documentation for the authentication API",
     },
     paths: {
       "/auth/signup": {
         post: {
-          "summary": "Create an user",
-          "requestBody": {
-            "required": true,
-            "content": {
+          summary: "Create an user",
+          requestBody: {
+            required: true,
+            content: {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "USEC_MAIL": {
-                      "type": "string",
-                      "description": "The user's email address"
+                schema: {
+                  type: "object",
+                  properties: {
+                    USEC_MAIL: {
+                      type: "string",
+                      description: "The user's email address",
                     },
-                    "USEC_PASSWORD": {
-                      "type": "string",
-                      "description": "The user's password"
+                    USEC_PASSWORD: {
+                      type: "string",
+                      description: "The user's password",
                     },
-                    "USEC_FNAME": {
-                      "type": "string",
-                      "description": "The user's first name"
+                    USEC_FNAME: {
+                      type: "string",
+                      description: "The user's first name",
                     },
-                    "USEC_LNAME": {
-                      "type": "string",
-                      "description": "The user's last name"
+                    USEC_LNAME: {
+                      type: "string",
+                      description: "The user's last name",
                     },
-                    "USED_BIRTH": {
-                      "type": "string",
-                      "format": "date",
-                      "description": "The user's birthdate"
+                    USED_BIRTH: {
+                      type: "string",
+                      format: "date",
+                      description: "The user's birthdate",
                     },
-                    "USEC_TYPE": {
-                      "type": "string",
-                      "description": "The user's type (e.g., admin, user)"
-                    }
+                    USEC_TYPE: {
+                      type: "string",
+                      description: "The user's type (e.g., admin, user)",
+                    },
                   },
-                  "required": ["USEC_MAIL", "USEC_PASSWORD", "USEC_FNAME", "USEC_LNAME", "USED_BIRTH", "USEC_TYPE"]
-                }
-              }
-            }
+                  required: [
+                    "USEC_MAIL",
+                    "USEC_PASSWORD",
+                    "USEC_FNAME",
+                    "USEC_LNAME",
+                    "USED_BIRTH",
+                    "USEC_TYPE",
+                  ],
+                },
+              },
+            },
           },
-          "responses": {
+          responses: {
             "201": {
-              "description": "User successfully created",
-              "content": {
+              description: "User successfully created",
+              content: {
                 "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "message": {
-                        "type": "string",
-                        "description": "Confirmation message"
+                  schema: {
+                    type: "object",
+                    properties: {
+                      message: {
+                        type: "string",
+                        description: "Confirmation message",
                       },
-                      "user": {
-                        "type": "object",
-                        "properties": {
-                          "USEC_MAIL": {
-                            "type": "string"
+                      user: {
+                        type: "object",
+                        properties: {
+                          USEC_MAIL: {
+                            type: "string",
                           },
-                          "USEC_FNAME": {
-                            "type": "string"
+                          USEC_FNAME: {
+                            type: "string",
                           },
-                          "USEC_LNAME": {
-                            "type": "string"
+                          USEC_LNAME: {
+                            type: "string",
                           },
-                          "USED_BIRTH": {
-                            "type": "string",
-                            "format": "date"
+                          USED_BIRTH: {
+                            type: "string",
+                            format: "date",
                           },
-                          "USEC_TYPE": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
+                          USEC_TYPE: {
+                            type: "string",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
             },
             "400": {
-              "description": "Error during registration"
-            }
-          }
-        }
-
+              description: "Error during registration",
+            },
+          },
+        },
       },
       "/auth/signin": {
         post: {
-          "summary": "Connect an user",
-          "requestBody": {
-            "required": true,
-            "content": {
+          summary: "Connect an user",
+          requestBody: {
+            required: true,
+            content: {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "USEC_MAIL": {
-                      "type": "string",
-                      "description": "The user's email address"
+                schema: {
+                  type: "object",
+                  properties: {
+                    USEC_MAIL: {
+                      type: "string",
+                      description: "The user's email address",
                     },
-                    "USEC_PASSWORD": {
-                      "type": "string",
-                      "description": "The user's password"
-                    }
+                    USEC_PASSWORD: {
+                      type: "string",
+                      description: "The user's password",
+                    },
                   },
-                  "required": ["USEC_MAIL", "USEC_PASSWORD"]
-                }
-              }
-            }
+                  required: ["USEC_MAIL", "USEC_PASSWORD"],
+                },
+              },
+            },
           },
-          "responses": {
+          responses: {
             "201": {
-              "description": "User successfully connected",
-              "content": {
+              description: "User successfully connected",
+              content: {
                 "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "message": {
-                        "type": "string",
-                        "description": "Confirmation message"
+                  schema: {
+                    type: "object",
+                    properties: {
+                      message: {
+                        type: "string",
+                        description: "Confirmation message",
                       },
-                      "user": {
-                        "type": "object",
-                        "properties": {
-                          "USEC_MAIL": {
-                            "type": "string"
+                      user: {
+                        type: "object",
+                        properties: {
+                          USEC_MAIL: {
+                            type: "string",
                           },
-                          "USEC_FNAME": {
-                            "type": "string"
+                          USEC_FNAME: {
+                            type: "string",
                           },
-                          "USEC_LNAME": {
-                            "type": "string"
+                          USEC_LNAME: {
+                            type: "string",
                           },
-                          "USED_BIRTH": {
-                            "type": "string",
-                            "format": "date"
+                          USED_BIRTH: {
+                            type: "string",
+                            format: "date",
                           },
-                          "USEC_TYPE": {
-                            "type": "string"
-                          }
-                        }
+                          USEC_TYPE: {
+                            type: "string",
+                          },
+                        },
                       },
-                      "token": {
-                        "type": "string",
-                        "description": "the JWT token for authentication"
-                      }
-                    }
-                  }
-                }
-              }
+                      token: {
+                        type: "string",
+                        description: "the JWT token for authentication",
+                      },
+                    },
+                  },
+                },
+              },
             },
             "401": {
-              "description": "Error during connection"
-            }
-          }
-        }
-
+              description: "Error during connection",
+            },
+          },
+        },
       },
       "/auth/invitetenant": {
         post: {
-          "summary": "Invite a tenant",
-          "requestBody": {
-            "required": true,
-            "content": {
+          summary: "Invite a tenant",
+          requestBody: {
+            required: true,
+            content: {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "OWNER_NAME": {
-                      "type": "string",
-                      "description": "The owner's name"
+                schema: {
+                  type: "object",
+                  properties: {
+                    OWNER_NAME: {
+                      type: "string",
+                      description: "The owner's name",
                     },
-                    "USEC_MAIL": {
-                      "type": "string",
-                      "description": "The tenant's password"
+                    USEC_MAIL: {
+                      type: "string",
+                      description: "The tenant's password",
                     },
-                    "ADDRESS": {
-                      "type": "string",
-                      "description": "address of the futur tenant"
-                    }
+                    ADDRESS: {
+                      type: "string",
+                      description: "address of the futur tenant",
+                    },
                   },
-                  "required": ["OWNER_NAME","USEC_MAIL", "ADDRESS"]
-                }
-              }
-            }
+                  required: ["OWNER_NAME", "USEC_MAIL", "ADDRESS"],
+                },
+              },
+            },
           },
-          "responses": {
+          responses: {
             "201": {
-              "description": "User successfully created",
-              "content": {
+              description: "User successfully created",
+              content: {
                 "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "message": {
-                        "type": "string",
-                        "description": "Confirmation message"
+                  schema: {
+                    type: "object",
+                    properties: {
+                      message: {
+                        type: "string",
+                        description: "Confirmation message",
                       },
-                      "user": {
-                        "type": "object",
-                        "properties": {
-                          "USEC_MAIL": {
-                            "type": "string"
+                      user: {
+                        type: "object",
+                        properties: {
+                          USEC_MAIL: {
+                            type: "string",
                           },
-                          "USEC_TYPE": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
+                          USEC_TYPE: {
+                            type: "string",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
             },
             "400": {
-              "description": "Error during registration"
-            }
-          }
-        }
-
+              description: "Error during registration",
+            },
+          },
+        },
       },
       "/access/check": {
         post: {
-          "summary": "Create an user",
-          "requestBody": {
-            "required": true,
-            "content": {
+          summary: "Create an user",
+          requestBody: {
+            required: true,
+            content: {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string",
-                      "description": "the JWT token for authentication"
+                schema: {
+                  type: "object",
+                  properties: {
+                    token: {
+                      type: "string",
+                      description: "the JWT token for authentication",
                     },
-                    "rightName": {
-                      "type": "string",
-                      "description": "The name of the right"
-                    }
+                    rightName: {
+                      type: "string",
+                      description: "The name of the right",
+                    },
                   },
-                  "required": ["token","rightName"]
-                }
-              }
-            }
+                  required: ["token", "rightName"],
+                },
+              },
+            },
           },
-          "responses": {
+          responses: {
             "201": {
-              "description": "Access granted",
-              "content": {
+              description: "Access granted",
+              content: {
                 "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "message": {
-                        "type": "string",
-                        "description": "Confirmation message"
-                      }
-                    }
-                  }
-                }
-              }
+                  schema: {
+                    type: "object",
+                    properties: {
+                      message: {
+                        type: "string",
+                        description: "Confirmation message",
+                      },
+                    },
+                  },
+                },
+              },
             },
             "401": {
-              "description": "Error during access check"
+              description: "Error during access check",
             },
             "403": {
-              "description": "Access denied"
-            }
-          }
-        }
-
-      }
-    }
+              description: "Access denied",
+            },
+          },
+        },
+      },
+    },
   },
-  apis: ['./routes/*.ts'],
+  apis: ["./routes/*.ts"],
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
-console.log('SwaggerSpec:', JSON.stringify(swaggerSpec, null, 2));
+console.log("SwaggerSpec:", JSON.stringify(swaggerSpec, null, 2));
 
 export default swaggerSpec;
-
