@@ -11,7 +11,7 @@ const swaggerOptions = {
     paths: {
       "/auth/signup": {
         post: {
-          summary: "Create an user",
+          summary: "Create a user",
           requestBody: {
             required: true,
             content: {
@@ -103,7 +103,7 @@ const swaggerOptions = {
       },
       "/auth/signin": {
         post: {
-          summary: "Connect an user",
+          summary: "Connect a user",
           requestBody: {
             required: true,
             content: {
@@ -189,7 +189,7 @@ const swaggerOptions = {
                     },
                     USEC_MAIL: {
                       type: "string",
-                      description: "The tenant's password",
+                      description: "The tenant's email address",
                     },
                     ADDRESS: {
                       type: "string",
@@ -237,7 +237,7 @@ const swaggerOptions = {
       },
       "/access/check": {
         post: {
-          summary: "Create an user",
+          summary: "Check access rights",
           requestBody: {
             required: true,
             content: {
