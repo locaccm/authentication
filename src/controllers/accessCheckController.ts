@@ -15,6 +15,7 @@ export const checkAccess = async (
     if (!rightName) {
       throw new Error("Right name is missing");
     }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
       userId: string;
       status: string;
