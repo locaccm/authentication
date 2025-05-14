@@ -5,8 +5,9 @@ import { string } from "zod";
 import { rolesPermissions } from "../../config/rolesPermissions";
 
 const tokens: { [key: string]: String } = {
-  owner: "",
-  tenant: "",
+  OWNER: "",
+  TENANT: "",
+  ADMIN: "",
 };
 describe("access check", () => {
   beforeAll(async () => {
@@ -71,8 +72,8 @@ describe("access check", () => {
               roleName,
               permissions,
               !(
-                roleName === "admin" ||
-                role === "everyone" ||
+                roleName === "ADMIN" ||
+                role === "EVERYONE" ||
                 roleName === role
               ),
             );
@@ -94,7 +95,7 @@ describe("access check", () => {
   });
   it("Should reject a request without rightName", async () => {
     const res = await request(app).post("/access/check").send({
-      token: tokens["owner"],
+      token: tokens["OWNER"],
     });
 
     expect(res.body).toHaveProperty(
