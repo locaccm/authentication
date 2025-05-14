@@ -70,7 +70,11 @@ describe("access check", () => {
             testByAllFunction(
               roleName,
               permissions,
-              !(roleName === "admin" || role === "everyone" || roleName === role),
+              !(
+                roleName === "admin" ||
+                role === "everyone" ||
+                roleName === role
+              ),
             );
           });
         }
@@ -113,7 +117,6 @@ function testByAllFunction(
         .post("/access/check")
         .send({ token, rightName });
       if (shouldFail) {
-
         expect(res.body).toHaveProperty("message", "Access denied");
         expect(res.statusCode).toEqual(403);
         return;
