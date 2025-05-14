@@ -22,7 +22,7 @@ export const checkAccess = async (
     };
     const accessApproved =
       rolesPermissions[decoded.status].includes(rightName) ||
-      rolesPermissions["EVERYONE"].includes(rightName)||
+      rolesPermissions["EVERYONE"].includes(rightName) ||
       decoded.status == "ADMIN";
 
     if (accessApproved) {
