@@ -45,10 +45,6 @@ export const rolesPermissions: Record<string, string[]> = {
   admin: [
     "getUsers",
     "updateUser",
-    "getEvents",
-    "createEvent",
-    "updateEvent",
-    "deleteEvent",
     "getMessages",
     "markAsRead",
     "deleteMessage",
@@ -57,6 +53,5 @@ export const rolesPermissions: Record<string, string[]> = {
     "updateAccommodation",
     "deleteAccommodation",
     "getLeases",
-    "updateLease",
   ],
 };
