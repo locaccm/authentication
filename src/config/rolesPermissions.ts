@@ -12,15 +12,14 @@ export const rolesPermissions: Record<string, string[]> = {
     "addTenantWithHousing",
     "updateTenantWithHousing",
     "deleteTenantWithHousing",
+    "createLease",
+    "updateLease",
+    "deleteLease"
   ],
   tenant: [],
   everyone: [
-    "updateProfile",
     "postDocument",
     "deleteDocument",
-    "setProfile",
-    "getProfile",
-    "deleteProfile",
     "getDocument",
     "getOwners",
     "getOwnersById",
@@ -39,5 +38,25 @@ export const rolesPermissions: Record<string, string[]> = {
     "createSmtpServer",
     "createReminder",
     "createTemplateEmail",
+    "updateProfile",
+    "getProfile",
+    "deleteProfile"
   ],
+  admin:[
+    "getUsers",
+    "updateUser",
+    "getEvents",
+    "createEvent",
+    "updateEvent",
+    "deleteEvent",
+    "getMessages",
+    "markAsRead",
+    "deleteMessage",
+    "getAccommodations",
+    "createAccommodation",
+    "updateAccommodation",
+    "deleteAccommodation",
+    "getLeases",
+    "updateLease"
+  ]
 };
