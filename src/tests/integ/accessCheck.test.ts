@@ -18,7 +18,7 @@ describe("access check", () => {
         "pedro",
         "toto",
         now,
-        "owner",
+        "OWNER",
       ),
       new User(
         "tenantaccess" + Math.floor(Math.random() * 1000000) + "@example.com",
@@ -26,7 +26,7 @@ describe("access check", () => {
         "pedro",
         "toto",
         now,
-        "tenant",
+        "TENANT",
       ),
       new User(
         "adminaccess" + Math.floor(Math.random() * 1000000) + "@example.com",
@@ -34,7 +34,7 @@ describe("access check", () => {
         "pedro",
         "toto",
         now,
-        "admin",
+        "ADMIN",
       ),
     ];
 
