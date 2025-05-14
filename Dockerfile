@@ -12,7 +12,8 @@ RUN npm install
 
 COPY . .
 
-RUN npm run migrate
+RUN npx prisma db pull
+RUN npx prisma generate
 RUN npm run build
 
 EXPOSE 3000

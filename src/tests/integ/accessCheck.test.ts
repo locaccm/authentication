@@ -28,6 +28,14 @@ describe("access check", () => {
         now,
         "tenant",
       ),
+      new User(
+        "adminaccess" + Math.floor(Math.random() * 1000000) + "@example.com",
+        "ValidPass1!",
+        "pedro",
+        "toto",
+        now,
+        "admin",
+      ),
     ];
 
     for (const user of users) {
@@ -52,7 +60,7 @@ describe("access check", () => {
         console.error("User  type is undefined for user:", user);
       }
     }
-  });
+  }, 30000);
 
   describe("All access check tests.", () => {
     Object.entries(tokens).forEach(([roleName]) => {
@@ -62,7 +70,11 @@ describe("access check", () => {
             testByAllFunction(
               roleName,
               permissions,
-              roleName != role && role != "everyone",
+              !(
+                roleName === "admin" ||
+                role === "everyone" ||
+                roleName === role
+              ),
             );
           });
         }
@@ -105,12 +117,13 @@ function testByAllFunction(
         .post("/access/check")
         .send({ token, rightName });
       if (shouldFail) {
-        expect(res.statusCode).toEqual(403);
         expect(res.body).toHaveProperty("message", "Access denied");
+        expect(res.statusCode).toEqual(403);
         return;
       }
-      expect(res.statusCode).toEqual(200);
+
       expect(res.body).toHaveProperty("message", "Access granted");
+      expect(res.statusCode).toEqual(200);
     });
   }
 }

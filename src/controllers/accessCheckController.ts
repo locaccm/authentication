@@ -22,7 +22,8 @@ export const checkAccess = async (
     };
     const accessApproved =
       rolesPermissions[decoded.status].includes(rightName) ||
-      rolesPermissions.everyone.includes(rightName);
+      rolesPermissions.everyone.includes(rightName) ||
+      decoded.status == "admin";
 
     if (accessApproved) {
       res.status(200).json({ message: "Access granted" });
