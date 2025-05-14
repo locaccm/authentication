@@ -17,6 +17,7 @@ export const rolesPermissions: Record<string, string[]> = {
     "deleteLease",
     "getOwnerProperties",
     "getOwnerLeases",
+    "getLease",
   ],
   tenant: [],
   everyone: [
