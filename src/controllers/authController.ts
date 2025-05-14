@@ -32,6 +32,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       USED_BIRTH,
       USEC_TYPE,
     );
+    console.log(req.body)
     if (!user.hasAllAttributesForRegister()) {
       throw new Error("missing registration information");
     }

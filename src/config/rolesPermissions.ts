@@ -1,5 +1,5 @@
 export const rolesPermissions: Record<string, string[]> = {
-  owner: [
+  OWNER: [
     "setHouse",
     "getHouse",
     "updateHouse",
@@ -19,8 +19,8 @@ export const rolesPermissions: Record<string, string[]> = {
     "getOwnerLeases",
     "getLease",
   ],
-  tenant: [],
-  everyone: [
+  TENANT: [],
+  EVERYONE: [
     "postDocument",
     "deleteDocument",
     "getDocument",
@@ -50,7 +50,7 @@ export const rolesPermissions: Record<string, string[]> = {
     "downloadLeaseDocument",
     "getTenantCurrentAccommodation",
   ],
-  admin: [
+  ADMIN: [
     "getUsers",
     "updateUser",
     "getMessages",
