@@ -40,6 +40,10 @@ const swaggerOptions = {
                       format: "date",
                       description: "The user's birthdate",
                     },
+                    USEC_TYPE: {
+                      type: "string",
+                      description: "The user's type (e.g., admin, user)",
+                    },
                   },
                   required: [
                     "USEC_MAIL",
@@ -47,6 +51,7 @@ const swaggerOptions = {
                     "USEC_FNAME",
                     "USEC_LNAME",
                     "USED_BIRTH",
+                    "USEC_TYPE",
                   ],
                 },
               },

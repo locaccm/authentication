@@ -5,8 +5,9 @@ import { string } from "zod";
 import { rolesPermissions } from "../../config/rolesPermissions";
 
 const tokens: { [key: string]: String } = {
-  owner: "",
-  tenant: "",
+  OWNER: "",
+  TENANT: "",
+  ADMIN: "",
 };
 describe("access check", () => {
   beforeAll(async () => {
@@ -18,7 +19,7 @@ describe("access check", () => {
         "pedro",
         "toto",
         now,
-        "owner",
+        "OWNER",
       ),
       new User(
         "tenantaccess" + Math.floor(Math.random() * 1000000) + "@example.com",
@@ -26,7 +27,15 @@ describe("access check", () => {
         "pedro",
         "toto",
         now,
-        "tenant",
+        "TENANT",
+      ),
+      new User(
+        "adminaccess" + Math.floor(Math.random() * 1000000) + "@example.com",
+        "ValidPass1!",
+        "pedro",
+        "toto",
+        now,
+        "ADMIN",
       ),
     ];
 
@@ -52,7 +61,7 @@ describe("access check", () => {
         console.error("User  type is undefined for user:", user);
       }
     }
-  });
+  }, 30000);
 
   describe("All access check tests.", () => {
     Object.entries(tokens).forEach(([roleName]) => {
@@ -62,7 +71,11 @@ describe("access check", () => {
             testByAllFunction(
               roleName,
               permissions,
-              roleName != role && role != "everyone",
+              !(
+                roleName === "ADMIN" ||
+                role === "EVERYONE" ||
+                roleName === role
+              ),
             );
           });
         }
@@ -82,7 +95,7 @@ describe("access check", () => {
   });
   it("Should reject a request without rightName", async () => {
     const res = await request(app).post("/access/check").send({
-      token: tokens["owner"],
+      token: tokens["OWNER"],
     });
 
     expect(res.body).toHaveProperty(
@@ -105,12 +118,13 @@ function testByAllFunction(
         .post("/access/check")
         .send({ token, rightName });
       if (shouldFail) {
-        expect(res.statusCode).toEqual(403);
         expect(res.body).toHaveProperty("message", "Access denied");
+        expect(res.statusCode).toEqual(403);
         return;
       }
-      expect(res.statusCode).toEqual(200);
+
       expect(res.body).toHaveProperty("message", "Access granted");
+      expect(res.statusCode).toEqual(200);
     });
   }
 }

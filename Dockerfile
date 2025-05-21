@@ -1,5 +1,9 @@
 FROM node:20-alpine
 
+ARG DATABASE_URL
+
+ENV DATABASE_URL=${DATABASE_URL}
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -8,7 +12,8 @@ RUN npm install
 
 COPY . .
 
-RUN npm run migrate
+RUN npx prisma db pull
+RUN npx prisma generate
 RUN npm run build
 
 EXPOSE 3000
