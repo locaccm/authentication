@@ -3,8 +3,7 @@ import accessTokenRoute from "./routes/accessTokenRoute";
 import authRoutes from "./routes/authRoute";
 import swaggerSpec from "./swagger/swagger";
 import swaggerUi from "swagger-ui-express";
-import cors from 'cors';
-
+import cors from "cors";
 
 const app = express();
 app.use(cors());
