@@ -6,8 +6,7 @@ resource "google_cloud_run_service" "service" {
     metadata {
       annotations = {
         "run.googleapis.com/vpc-access-connector" = var.vpc_connector
-        "run.googleapis.com/network-interfaces"    = "all"
-      }
+        }
     }
 
     spec {

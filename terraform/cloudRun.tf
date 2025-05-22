@@ -14,6 +14,7 @@ module "cloud_run_authentication" {
 }
 
 module "cloud_run_auth_invokers" {
+  depends_on = [module.cloud_run_authentication]
   source        = "./modules/cloud_run_invoker"
   region        = "europe-west1"
   service_name  = "authentication"
