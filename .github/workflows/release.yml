@@ -18,6 +18,7 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          project_id: intricate-pad-455413-f7
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
