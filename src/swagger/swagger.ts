@@ -281,6 +281,19 @@ const swaggerOptions = {
             },
             "403": {
               description: "Access denied",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      message: {
+                        type: "string",
+                        description: "refused access message",
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -291,6 +304,5 @@ const swaggerOptions = {
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
-console.log("SwaggerSpec:", JSON.stringify(swaggerSpec, null, 2));
 
 export default swaggerSpec;
