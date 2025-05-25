@@ -33,7 +33,7 @@ jobs:
       - name: Apply database migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: npx prisma migrate deploy && npx prisma generate
+        run: npx prisma db pull && npx prisma generate
 
       - name: Set JWT SECRET
         run: echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
@@ -93,7 +93,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            --build-arg DATABASE_URL=${{ secrets.DATABASE_URL_PROD }} \
             -t authentication:latest .
 
       - name: Tag & Push to Artifact Registry
