@@ -17,7 +17,7 @@ jobs:
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          credentials_json: ${{ secrets.GCP_CREDENTIALS_CD }}
           project_id: intricate-pad-455413-f7
 
       - name: Setup Terraform
