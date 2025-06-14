@@ -7,7 +7,7 @@ import cors from "cors";
 
 const app = express();
 const allowedOrigins = [
-  process.env.CORS_ORIGIN, 
+  "https://frontend-service-782869810736.europe-west1.run.app",
 ];
 
 app.use(
