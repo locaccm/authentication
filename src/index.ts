@@ -6,9 +6,19 @@ import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 
 const app = express();
+const allowedOrigins = [
+  process.env.CORS_ORIGIN, 
+];
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "*",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   }),
