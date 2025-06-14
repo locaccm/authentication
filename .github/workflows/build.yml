@@ -94,6 +94,9 @@ jobs:
         run: |
           docker build \
             --build-arg DATABASE_URL=${{ secrets.DATABASE_URL_PRE_PROD }} \
+            --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            --build-arg CORS_ORIGIN=${{ secrets.CORS_ORIGIN }} \
+            --build-arg REGISTER_URL=${{ secrets.REGISTER_URL }} \
             -t authentication:latest .
 
       - name: Tag & Push to Artifact Registry
