@@ -50,6 +50,10 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
         });
         return;
       }
+    } else {
+      if (user.getType() === "") {
+        user.setStatus("OWNER");
+      }
     }
     userInDb = await registerUser(user);
     userInDb.removePassword();
