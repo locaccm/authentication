@@ -138,10 +138,12 @@ export const inviteTenant = async (
       throw new Error("Email already exists");
     }
     const mailIsSended = await fetch(process.env.MAIL_INVITE_TENANT!, {
-      method: "GET",
+      method: "POST",
       body: JSON.stringify({
-        email: USEC_MAIL,
-        emailContent: emailInformation(OWNER_NAME, USEC_MAIL, ADDRESS),
+        to: USEC_MAIL,
+        subject: `${OWNER_NAME} vous a invité`,
+        text: emailInformation(OWNER_NAME, USEC_MAIL, ADDRESS),
+        html: emailInformation(OWNER_NAME, USEC_MAIL, ADDRESS),
       }),
     });
     if (!mailIsSended.ok) {
