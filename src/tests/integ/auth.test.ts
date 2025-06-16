@@ -193,6 +193,7 @@ describe("Authentication all route tests.", () => {
         expectedMessage: "Error during registration :Mail not sent",
       },
     ];
+    const mockToken = "Bearer faketoken123";
 
     testCases.forEach(
       ({ name, mockFetch, requestBody, expectedStatus, expectedMessage }) => {
@@ -201,6 +202,7 @@ describe("Authentication all route tests.", () => {
 
           const res = await request(app)
             .post("/auth/invitetenant")
+            .set("Authorization", mockToken)
             .send(requestBody);
 
           if (expectedStatus === 201) {
