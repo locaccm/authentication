@@ -1,2 +1,0 @@
-# authentication
-Loctech Authentication Management

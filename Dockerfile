@@ -1,0 +1,29 @@
+FROM node:20-alpine
+
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
+ARG JWT_SECRET
+ENV JWT_SECRET=${JWT_SECRET}
+
+ARG CORS_ORIGIN
+ENV CORS_ORIGIN=${CORS_ORIGIN}
+
+ARG REGISTER_URL
+ENV REGISTER_URL=${REGISTER_URL}
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npx prisma db pull
+RUN npx prisma generate
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
