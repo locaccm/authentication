@@ -97,6 +97,7 @@ jobs:
             --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
             --build-arg CORS_ORIGIN=${{ secrets.CORS_ORIGIN }} \
             --build-arg REGISTER_URL=${{ secrets.REGISTER_URL }} \
+            --build-arg MAIL_INVITE_TENANT=${{ secrets.MAIL_INVITE_TENANT }} \
             -t authentication:latest .
 
       - name: Tag & Push to Artifact Registry
