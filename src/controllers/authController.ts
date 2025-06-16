@@ -133,8 +133,18 @@ export const inviteTenant = async (
     if (await connectUser(user)) {
       throw new Error("Email already exists");
     }
+    const token = req.headers.authorization;
+
+    if (!token) {
+      res.status(401).json({ error: "Authorization token missing" });
+      return;
+    }
     const mailIsSended = await fetch(process.env.MAIL_INVITE_TENANT!, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
       body: JSON.stringify({
         to: USEC_MAIL,
         subject: `${OWNER_NAME} vous a invité`,
